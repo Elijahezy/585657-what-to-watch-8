@@ -1,18 +1,11 @@
 import FilmCard from '../film-card/film-card';
-
-type MockData = {
-  name: string,
-  previewImage: string,
-  genre: string,
-  released: number,
-}
+import { FilmItem } from '../app/app';
 
 type FilmsAmountProps = {
-  filmsAmount: number;
-  filmsData: MockData[],
+  filmsData: FilmItem[],
 }
 
-function MainPageContent({filmsAmount, filmsData}: FilmsAmountProps): JSX.Element {
+function MainPageContent({filmsData}: FilmsAmountProps): JSX.Element {
   return (
     <div className="page-content">
       <section className="catalog">
@@ -52,7 +45,9 @@ function MainPageContent({filmsAmount, filmsData}: FilmsAmountProps): JSX.Elemen
         </ul>
 
         <div className="catalog__films-list">
-          {new Array(filmsAmount).fill('').map(() => FilmCard(filmsData))}
+          {
+            filmsData.map((film) => <FilmCard key={film.name} filmsData={ film }/>)
+          }
         </div>
 
         <div className="catalog__more">

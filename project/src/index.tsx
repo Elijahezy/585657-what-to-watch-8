@@ -26,15 +26,14 @@ const FILM_RELEASES = [
   2005,
 ];
 
-
-type MockData = {
+type FilmItem = {
   name: string,
   previewImage: string,
   genre: string,
   released: number,
 }
 
-function generateData ():MockData {
+function generateFilmaCardsData(): FilmItem {
   return {
     name: FILM_NAMES[Math.floor(Math.random() * FILM_NAMES.length)],
     previewImage: FILM_ULRS[Math.floor(Math.random() * FILM_ULRS.length)],
@@ -47,16 +46,13 @@ const Setting = {
   FILMS: 20,
 };
 
-const data = new Array(Setting.FILMS).fill('').map(generateData);
-
-const SettingData = {
-  FILMS: 20,
-  FILMS_DATA: data,
+const temporaryData = {
+  FILM_CARDS: new Array(Setting.FILMS).fill('').map(generateFilmaCardsData),
 };
 
 
 ReactDOM.render(
   <React.StrictMode>
-    <App filmsAmount = {Setting.FILMS} filmsData={SettingData.FILMS_DATA}/>
+    <App filmsData={temporaryData.FILM_CARDS}/>
   </React.StrictMode>,
   document.getElementById('root'));

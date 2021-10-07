@@ -1,12 +1,7 @@
-type MockData = {
-  name: string,
-  previewImage: string,
-  genre: string,
-  released: number,
-}
+import {FilmItem} from '../app/app';
 
 type CardMockDataProps = {
-  filmsData: MockData[],
+  filmsData: FilmItem,
 }
 
 

@@ -1,7 +1,7 @@
 import MainPage from '../main/main';
 import MainPageContent from '../main/main-content';
 
-type MockData = {
+export type FilmItem = {
   name: string,
   previewImage: string,
   genre: string,
@@ -9,15 +9,14 @@ type MockData = {
 }
 
 type AppFilmsAmount = {
-  filmsAmount: number;
-  filmsData: MockData[],
+  filmsData: FilmItem[],
 }
 
 
-function App({filmsAmount, filmsData}: AppFilmsAmount): JSX.Element {
+function App({filmsData}: AppFilmsAmount): JSX.Element {
   return (
     <>
-      <MainPage /><MainPageContent filmsAmount={filmsAmount} filmsData={filmsData}/>
+      <MainPage /><MainPageContent filmsData={filmsData}/>
     </>
   );
 }
