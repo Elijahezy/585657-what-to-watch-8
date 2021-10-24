@@ -1,9 +1,21 @@
-function Review(): JSX.Element {
+import {Films} from '../../mocks/types';
+import {useState} from 'react';
+
+type ReviewProps = {
+  filmsData: Films[],
+}
+
+function Review({filmsData}:ReviewProps): JSX.Element {
+
+  const [,testFilm] = filmsData;
+
+  const [review, setReview] = useState('');
+
   return (
     <section className="film-card film-card--full">
       <div className="film-card__header">
         <div className="film-card__bg">
-          <img src="img/bg-the-grand-budapest-hotel.jpg" alt="The Grand Budapest Hotel" />
+          <img src={testFilm.posterImage} alt="The Grand Budapest Hotel" />
         </div>
 
         <h1 className="visually-hidden">WTW</h1>
@@ -20,7 +32,7 @@ function Review(): JSX.Element {
           <nav className="breadcrumbs">
             <ul className="breadcrumbs__list">
               <li className="breadcrumbs__item">
-                <a href="film-page.html" className="breadcrumbs__link">The Grand Budapest Hotel</a>
+                <a href="film-page.html" className="breadcrumbs__link">{testFilm.name}</a>
               </li>
               <li className="breadcrumbs__item">
                 <a className="breadcrumbs__link" href="/">Add review</a>
@@ -41,7 +53,7 @@ function Review(): JSX.Element {
         </header>
 
         <div className="film-card__poster film-card__poster--small">
-          <img src="img/the-grand-budapest-hotel-poster.jpg" alt="The Grand Budapest Hotel poster" width="218" height="327" />
+          <img src={testFilm.posterImage} alt={testFilm.name} width="218" height="327" />
         </div>
       </div>
 
@@ -82,7 +94,14 @@ function Review(): JSX.Element {
           </div>
 
           <div className="add-review__text">
-            <textarea className="add-review__textarea" name="review-text" id="review-text" placeholder="Review text"></textarea>
+            <textarea className="add-review__textarea"
+              name="review-text"
+              id="review-text"
+              placeholder="Review text"
+              value={review}
+              onChange={(e) => setReview(e.target.value)}
+            >
+            </textarea>
             <div className="add-review__submit">
               <button className="add-review__btn" type="submit">Post</button>
             </div>

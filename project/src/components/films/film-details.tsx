@@ -1,4 +1,10 @@
-function MoviePage(): JSX.Element {
+import { Films } from '../../mocks/types';
+
+type FilmPageProps = {
+  filmsData: Films[]
+}
+
+function FilmPage({filmsData}:FilmPageProps): JSX.Element {
   return (
     <section className="film-card film-card--full">
       <div className="film-card__hero">
@@ -101,4 +107,4 @@ function MoviePage(): JSX.Element {
   );
 }
 
-export default MoviePage;
+export default FilmPage;
