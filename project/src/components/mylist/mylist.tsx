@@ -1,8 +1,8 @@
-import { Films } from '../../mocks/types';
-import FilmCard from '../films/film-card';
+import { Film } from '../../mocks/types';
+import FilmSmallCard from '../films/film-small-card';
 
 type MyListProps = {
-  filmsData: Films[],
+  filmsData: Film[],
 }
 
 function MyList({filmsData}:MyListProps): JSX.Element {
@@ -36,7 +36,7 @@ function MyList({filmsData}:MyListProps): JSX.Element {
 
         <div className="catalog__films-list">
           {
-            filmsData.map((film) => <FilmCard key={film.id} filmsData={ film }/>)
+            filmsData.map((film) => <FilmSmallCard key={film.id} filmsData={ film }/>)
           }
         </div>
       </section>

@@ -1,4 +1,4 @@
-export type Films = {
+export type Film = {
   id: number,
   name: string,
   videoLink: string,
@@ -9,7 +9,7 @@ export type Films = {
   backgroundImage: string,
   backgroundColor: string,
   previewVideoLink: string,
-  rating: string,
+  rating: number,
   scoresCount: number,
   director: string,
   starring: string[],

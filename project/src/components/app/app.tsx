@@ -2,10 +2,10 @@ import { BrowserRouter } from 'react-router-dom';
 import { Switch } from 'react-router';
 import { Route } from 'react-router';
 import {AppRoute, AuthorizationStatus} from '../../const';
-import { Films } from '../../mocks/types';
+import { Film } from '../../mocks/types';
 import MainPage from '../main/main';
 import Error from '../error/error';
-import FilmPage from '../films/film-details';
+import FilmPage from '../films/film-card';
 import Login from '../login/login';
 import Player from '../player/player';
 import Review from '../review/review';
@@ -13,7 +13,7 @@ import MyList from '../mylist/mylist';
 import PrivateRoute from '../private-route/private-route';
 
 type AppFilmsAmount = {
-  filmsData: Films[],
+  filmsData: Film[],
 }
 
 
@@ -24,7 +24,7 @@ function App({filmsData}: AppFilmsAmount): JSX.Element {
         <Route exact path={AppRoute.Main}>
           <MainPage filmsData={filmsData} />
         </Route>
-        <Route exact path={AppRoute.Film}>
+        <Route exact path={AppRoute.Films}>
           <FilmPage filmsData={filmsData}/>
         </Route>
         <Route exact path={AppRoute.Login}>

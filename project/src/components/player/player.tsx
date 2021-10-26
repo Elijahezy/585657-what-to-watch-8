@@ -1,7 +1,7 @@
-import {Films} from '../../mocks/types';
+import {Film} from '../../mocks/types';
 
 type PlayerProps = {
-  filmsData: Films[],
+  filmsData: Film[],
 }
 
 function Player({filmsData}:PlayerProps): JSX.Element {

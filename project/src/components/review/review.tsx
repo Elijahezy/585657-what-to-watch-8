@@ -1,28 +1,37 @@
-import {Films} from '../../mocks/types';
+import {Film} from '../../mocks/types';
 import {useState} from 'react';
+import {
+  useParams,
+  Link } from 'react-router-dom';
 
 type ReviewProps = {
-  filmsData: Films[],
+  filmsData: Film[],
 }
+
+const RATING_STARS = 10;
 
 function Review({filmsData}:ReviewProps): JSX.Element {
 
-  const [,testFilm] = filmsData;
+  const { id } = useParams<{ id: string }>();
+
+  const [currentFilm] = useState(() => filmsData.find((film) => film.id === parseFloat(id)));
 
   const [review, setReview] = useState('');
+  const [rating, setRating] = useState(0);
+
 
   return (
     <section className="film-card film-card--full">
       <div className="film-card__header">
         <div className="film-card__bg">
-          <img src={testFilm.posterImage} alt="The Grand Budapest Hotel" />
+          <img src={currentFilm?.backgroundImage} alt={currentFilm?.name} />
         </div>
 
         <h1 className="visually-hidden">WTW</h1>
 
         <header className="page-header">
           <div className="logo">
-            <a href="main.html" className="logo__link">
+            <a href="/" className="logo__link">
               <span className="logo__letter logo__letter--1">W</span>
               <span className="logo__letter logo__letter--2">T</span>
               <span className="logo__letter logo__letter--3">W</span>
@@ -32,10 +41,10 @@ function Review({filmsData}:ReviewProps): JSX.Element {
           <nav className="breadcrumbs">
             <ul className="breadcrumbs__list">
               <li className="breadcrumbs__item">
-                <a href="film-page.html" className="breadcrumbs__link">{testFilm.name}</a>
+                <Link to={`/films/${id}`} className="breadcrumbs__link">{currentFilm?.name}</Link>
               </li>
               <li className="breadcrumbs__item">
-                <a className="breadcrumbs__link" href="/">Add review</a>
+                <Link to={`/films/${id}/review`} className="breadcrumbs__link">Add review</Link>
               </li>
             </ul>
           </nav>
@@ -53,7 +62,7 @@ function Review({filmsData}:ReviewProps): JSX.Element {
         </header>
 
         <div className="film-card__poster film-card__poster--small">
-          <img src={testFilm.posterImage} alt={testFilm.name} width="218" height="327" />
+          <img src={currentFilm?.posterImage} alt={currentFilm?.name} width="218" height="327" />
         </div>
       </div>
 
@@ -61,35 +70,9 @@ function Review({filmsData}:ReviewProps): JSX.Element {
         <form action="#" className="add-review__form">
           <div className="rating">
             <div className="rating__stars">
-              <input className="rating__input" id="star-10" type="radio" name="rating" value="10" />
-              <label className="rating__label" htmlFor="star-10">Rating 10</label>
-
-              <input className="rating__input" id="star-9" type="radio" name="rating" value="9" />
-              <label className="rating__label" htmlFor="star-9">Rating 9</label>
-
-              <input className="rating__input" id="star-8" type="radio" name="rating" value="8" checked />
-              <label className="rating__label" htmlFor="star-8">Rating 8</label>
-
-              <input className="rating__input" id="star-7" type="radio" name="rating" value="7" />
-              <label className="rating__label" htmlFor="star-7">Rating 7</label>
-
-              <input className="rating__input" id="star-6" type="radio" name="rating" value="6" />
-              <label className="rating__label" htmlFor="star-6">Rating 6</label>
-
-              <input className="rating__input" id="star-5" type="radio" name="rating" value="5" />
-              <label className="rating__label" htmlFor="star-5">Rating 5</label>
-
-              <input className="rating__input" id="star-4" type="radio" name="rating" value="4" />
-              <label className="rating__label" htmlFor="star-4">Rating 4</label>
-
-              <input className="rating__input" id="star-3" type="radio" name="rating" value="3" />
-              <label className="rating__label" htmlFor="star-3">Rating 3</label>
-
-              <input className="rating__input" id="star-2" type="radio" name="rating" value="2" />
-              <label className="rating__label" htmlFor="star-2">Rating 2</label>
-
-              <input className="rating__input" id="star-1" type="radio" name="rating" value="1" />
-              <label className="rating__label" htmlFor="star-1">Rating 1</label>
+              {
+                new Array(RATING_STARS).fill('').map((value, index) => <><input className="rating__input" id={`star-${index}`} type="radio" name="rating" value={rating} onChange={(e) => setRating(parseFloat(e.target.value))}/><label className="rating__label" htmlFor={`star-${index}`}>Rating {index}</label></>)
+              }
             </div>
           </div>
 

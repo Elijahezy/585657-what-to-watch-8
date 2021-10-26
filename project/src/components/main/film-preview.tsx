@@ -1,7 +1,7 @@
-import {Films} from '../../mocks/types';
+import {Film} from '../../mocks/types';
 
 type FilmPreviewProps = {
-  firstFilm: Films,
+  firstFilm: Film,
 }
 
 

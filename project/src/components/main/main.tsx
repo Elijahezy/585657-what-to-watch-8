@@ -1,17 +1,14 @@
 import React from 'react';
 import MainPageContent from './main-content';
 import FilmPreview from './film-preview';
-import {Films} from '../../mocks/types';
-// import {useState} from 'react';
+import {Film} from '../../mocks/types';
 
 type FilmsAmountProps = {
-  filmsData: Films[],
+  filmsData: Film[],
 }
 
 function MainPage({filmsData}: FilmsAmountProps): JSX.Element {
   const [firstFilm] = filmsData;
-
-  // const [activeFilm, setFilm] = useState([firstFilm]);
 
   return (
     <React.Fragment>
