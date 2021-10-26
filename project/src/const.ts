@@ -5,7 +5,7 @@ export enum AppRoute {
   MyList = '/mylist',
   Player = '/player/:id',
   Review = '/films/:id/review',
-  Film = '/films/:id'
+  Films = '/films/:id'
 }
 
 export enum AuthorizationStatus {

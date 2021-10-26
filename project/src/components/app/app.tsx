@@ -2,25 +2,18 @@ import { BrowserRouter } from 'react-router-dom';
 import { Switch } from 'react-router';
 import { Route } from 'react-router';
 import {AppRoute, AuthorizationStatus} from '../../const';
+import { Film } from '../../mocks/types';
 import MainPage from '../main/main';
-import MainPageContent from '../main/main-content';
 import Error from '../error/error';
-import MoviePage from '../films/movie-page';
+import FilmPage from '../films/film-card';
 import Login from '../login/login';
 import Player from '../player/player';
 import Review from '../review/review';
 import MyList from '../mylist/mylist';
 import PrivateRoute from '../private-route/private-route';
 
-export type FilmItem = {
-  name: string,
-  previewImage: string,
-  genre: string,
-  released: number,
-}
-
 type AppFilmsAmount = {
-  filmsData: FilmItem[],
+  filmsData: Film[],
 }
 
 
@@ -29,26 +22,26 @@ function App({filmsData}: AppFilmsAmount): JSX.Element {
     <BrowserRouter>
       <Switch>
         <Route exact path={AppRoute.Main}>
-          <MainPage /><MainPageContent filmsData={filmsData}/>
+          <MainPage filmsData={filmsData} />
         </Route>
-        <Route exact path={AppRoute.Film}>
-          <MoviePage />
+        <Route exact path={AppRoute.Films}>
+          <FilmPage filmsData={filmsData}/>
         </Route>
         <Route exact path={AppRoute.Login}>
           <Login />
         </Route>
         <Route exact path={AppRoute.Player}>
-          <Player />
+          <Player filmsData={filmsData}/>
         </Route>
         <PrivateRoute
           exact
           path={AppRoute.MyList}
-          render={() => <MyList />}
-          authorizationStatus={AuthorizationStatus.NoAuth}
+          render={() => <MyList filmsData={filmsData}/>}
+          authorizationStatus={AuthorizationStatus.Auth}
         >
         </PrivateRoute>
         <Route exact path={AppRoute.Review}>
-          <Review />
+          <Review filmsData={filmsData}/>
         </Route>
         <Route>
           <Error />
