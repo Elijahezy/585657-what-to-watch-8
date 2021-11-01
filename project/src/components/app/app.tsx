@@ -7,7 +7,6 @@ import MainPage from '../main/main';
 import Error from '../error/error';
 import FilmPage from '../films/film-card';
 import Login from '../login/login';
-import Player from '../player/player';
 import Review from '../review/review';
 import MyList from '../mylist/mylist';
 import PrivateRoute from '../private-route/private-route';
@@ -29,9 +28,6 @@ function App({filmsData}: AppFilmsAmount): JSX.Element {
         </Route>
         <Route exact path={AppRoute.Login}>
           <Login />
-        </Route>
-        <Route exact path={AppRoute.Player}>
-          <Player filmsData={filmsData}/>
         </Route>
         <PrivateRoute
           exact

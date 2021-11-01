@@ -1,25 +1,73 @@
-import {Link} from 'react-router-dom';
-import {AppRoute} from '../../const';
 import {Film} from '../../mocks/types';
+import { Link, useHistory } from 'react-router-dom';
+import { useEffect, useState, useRef } from 'react';
 
-type CardMockDataProps = {
-  filmsData: Film,
+export type FilmCardProps = {
+  films: Film;
+  onMouseEnter: (id: number) => void,
+  onMouseLeave: () => void
 }
 
+const TIME = 1000;
 
-function FilmSmallCard({filmsData}:CardMockDataProps): JSX.Element {
+const VIDEO_STYLES = {
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+};
 
-  const {name, id, previewImage} = filmsData;
+function FilmSmallCard({films}: {films: Film}): JSX.Element {
+
+  const {id, name, posterImage, previewImage, previewVideoLink} = films;
+
+  const timer = useRef<NodeJS.Timeout | null>(null);
+  const [ isHovered, setHovered ] = useState(false);
+  const [ isDelayedHovered, setDelayedHovered ] = useState(false);
+
+  const history = useHistory();
+
+  const clearTimer = () => {
+    if (timer.current) {
+      clearTimeout(timer.current);
+      timer.current = null;
+    }
+  };
+
+  useEffect(() => {
+    clearTimer();
+    if (!isHovered) {
+      if (isDelayedHovered) {
+        setDelayedHovered(false);
+      }
+      return;
+    }
+    timer.current = setTimeout(() => {
+      if (!isHovered) {
+        if (isDelayedHovered) {
+          setDelayedHovered(false);
+        }
+        return;
+      }
+      setDelayedHovered(true);
+    }, TIME);
+    return clearTimer;
+  }, [isDelayedHovered, isHovered]);
 
   return (
-    <article className="small-film-card catalog__films-card">
-      <div className="small-film-card__image">
-        <img src={previewImage} alt={name} width="280" height="175" />
-      </div>
+    <article className="small-film-card catalog__films-card" onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)} onClick={() => history.push(`/films/${id}`)}
+    >
+      {
+        isDelayedHovered ?
+          <div style={VIDEO_STYLES}>
+            <video src={previewVideoLink} autoPlay muted poster={previewImage} width="280" height="175" style={{objectFit: 'cover'}} />
+          </div> :
+          <div className="small-film-card__image">
+            <img src={posterImage} alt={name} width="280" height="175" />
+          </div>
+      }
       <h3 className="small-film-card__title">
-        <Link to={AppRoute.Films.replace(':id', `${id}`)} className="small-film-card__link">
-          {name}
-        </Link>
+        <Link className="small-film-card__link" to={`/films/${id}`}>{name}</Link>
       </h3>
     </article>
   );

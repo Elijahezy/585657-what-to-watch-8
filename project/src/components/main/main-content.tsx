@@ -48,7 +48,7 @@ function MainPageContent({filmsData}: FilmsAmountProps): JSX.Element {
 
         <div className="catalog__films-list">
           {
-            filmsData.map((film) => <FilmSmallCard key={film.id} filmsData={ film }/>)
+            filmsData.map((film) => <FilmSmallCard key={film.id} films={ film }/>)
           }
         </div>
 
