@@ -35,18 +35,6 @@ function FilmPage({filmsData}:FilmPageProps): JSX.Element {
     }
   }
 
-  function setOverviewTab():void {
-    setActiveTab(<Overview currentFilm={currentFilm}/>);
-  }
-
-  function setDetailsTab():void {
-    setActiveTab(<Details currentFilm={currentFilm}/>);
-  }
-
-  function setReviewsTab():void {
-    setActiveTab(<Reviews/>);
-  }
-
   const [similarFilms] = useState(() => filmsData.filter((film) => film.genre === currentFilm?.genre && film.id !== currentFilm?.id).slice(0, SIMILAR_FILMS_MAX));
 
   return (
@@ -117,14 +105,13 @@ function FilmPage({filmsData}:FilmPageProps): JSX.Element {
               <nav className="film-nav film-card__nav">
                 <ul className="film-nav__list">
                   <li className="film-nav__item">
-                    <Link to={`/films/${id}`} className="film-nav__link" onClick={setOverviewTab}>Overview</Link>
-                    `Как мне сюда передать getTab? Я хочу в getTab передавать evt.target.text или textContent. Вроде не сложный код, но я запутался)`
+                    <Link to={`/films/${id}`} className="film-nav__link" onClick={() => getTab('Overview')}>Overview</Link>
                   </li>
                   <li className="film-nav__item">
-                    <Link to={`/films/${id}`} className="film-nav__link" onClick={setDetailsTab}>Details</Link>
+                    <Link to={`/films/${id}`} className="film-nav__link" onClick={() => getTab('Details')}>Details</Link>
                   </li>
                   <li className="film-nav__item">
-                    <Link to={`/films/${id}`} className="film-nav__link" onClick={setReviewsTab}>Reviews</Link>
+                    <Link to={`/films/${id}`} className="film-nav__link" onClick={() => getTab('Reviews')}>Reviews</Link>
                   </li>
                 </ul>
               </nav>
