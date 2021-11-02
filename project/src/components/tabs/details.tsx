@@ -1,4 +1,4 @@
-import {Film} from '../../../mocks/types';
+import {Film} from '../../mocks/types';
 
 type DetailsProps = {
   currentFilm: Film | undefined,

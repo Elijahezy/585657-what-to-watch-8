@@ -3,9 +3,9 @@ import {
   useParams,
   Link } from 'react-router-dom';
 import {useState} from 'react';
-import Overview from './film-card-details/overview';
-import Details from './film-card-details/details';
-import Reviews from './film-card-details/reviews';
+import Overview from '../tabs/overview';
+import Details from '../tabs/details';
+import Reviews from '../tabs/reviews';
 import FilmSmallCard from './film-small-card';
 
 type FilmPageProps = {
@@ -13,7 +13,6 @@ type FilmPageProps = {
 }
 
 const SIMILAR_FILMS_MAX = 4;
-
 
 function FilmPage({filmsData}:FilmPageProps): JSX.Element {
 

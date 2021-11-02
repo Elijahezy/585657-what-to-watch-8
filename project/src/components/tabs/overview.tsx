@@ -1,4 +1,4 @@
-import {Film} from '../../../mocks/types';
+import {Film} from '../../mocks/types';
 import React from 'react';
 
 type OverviewProps = {
