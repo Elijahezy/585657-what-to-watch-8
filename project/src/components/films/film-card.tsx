@@ -3,9 +3,9 @@ import {
   useParams,
   Link } from 'react-router-dom';
 import {useState} from 'react';
-import Overview from './film-card-details/overview';
-import Details from './film-card-details/details';
-import Reviews from './film-card-details/reviews';
+import Overview from '../tabs/overview';
+import Details from '../tabs/details';
+import Reviews from '../tabs/reviews';
 import FilmSmallCard from './film-small-card';
 
 type FilmPageProps = {
@@ -13,7 +13,6 @@ type FilmPageProps = {
 }
 
 const SIMILAR_FILMS_MAX = 4;
-
 
 function FilmPage({filmsData}:FilmPageProps): JSX.Element {
 
@@ -23,16 +22,17 @@ function FilmPage({filmsData}:FilmPageProps): JSX.Element {
 
   const [activeTab, setActiveTab] = useState(<Overview currentFilm={currentFilm}/>);
 
-  function setOverviewTab():void {
-    setActiveTab(<Overview currentFilm={currentFilm}/>);
-  }
-
-  function setDetailsTab():void {
-    setActiveTab(<Details currentFilm={currentFilm}/>);
-  }
-
-  function setReviewsTab():void {
-    setActiveTab(<Reviews/>);
+  function getTab(tab:string) {
+    switch(tab) {
+      case 'Overview':
+        setActiveTab(<Overview currentFilm={currentFilm}/>);
+        break;
+      case 'Details':
+        setActiveTab(<Details currentFilm={currentFilm}/>);
+        break;
+      case 'Reviews':
+        setActiveTab(<Reviews/>);
+    }
   }
 
   const [similarFilms] = useState(() => filmsData.filter((film) => film.genre === currentFilm?.genre && film.id !== currentFilm?.id).slice(0, SIMILAR_FILMS_MAX));
@@ -105,13 +105,13 @@ function FilmPage({filmsData}:FilmPageProps): JSX.Element {
               <nav className="film-nav film-card__nav">
                 <ul className="film-nav__list">
                   <li className="film-nav__item">
-                    <Link to={`/films/${id}`} className="film-nav__link" onClick={setOverviewTab}>Overview</Link>
+                    <Link to={`/films/${id}`} className="film-nav__link" onClick={() => getTab('Overview')}>Overview</Link>
                   </li>
                   <li className="film-nav__item">
-                    <Link to={`/films/${id}`} className="film-nav__link" onClick={setDetailsTab}>Details</Link>
+                    <Link to={`/films/${id}`} className="film-nav__link" onClick={() => getTab('Details')}>Details</Link>
                   </li>
                   <li className="film-nav__item">
-                    <Link to={`/films/${id}`} className="film-nav__link" onClick={setReviewsTab}>Reviews</Link>
+                    <Link to={`/films/${id}`} className="film-nav__link" onClick={() => getTab('Reviews')}>Reviews</Link>
                   </li>
                 </ul>
               </nav>
