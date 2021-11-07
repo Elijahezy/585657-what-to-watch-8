@@ -1,23 +1,30 @@
-import {Film} from '../../mocks/types';
+
 
 type FilmPreviewProps = {
-  firstFilm: Film,
+  promoFilmInfo: {
+    title: string;
+    genre: string;
+    releaseDate: number;
+  };
 }
 
 
-function FilmPreview({firstFilm}:FilmPreviewProps): JSX.Element {
+function FilmPreview({promoFilmInfo}:FilmPreviewProps): JSX.Element {
+
+  const {title, genre, releaseDate} = promoFilmInfo;
+
   return (
     <div className="film-card__wrap">
       <div className="film-card__info">
         <div className="film-card__poster">
-          <img src={firstFilm.previewImage} alt="The Grand Budapest Hotel poster" width="218" height="327" />
+          <img src="img/the-grand-budapest-hotel-poster.jpg" alt="The Grand Budapest Hotel poster" width="218" height="327" />
         </div>
 
         <div className="film-card__desc">
-          <h2 className="film-card__title">{firstFilm.name}</h2>
+          <h2 className="film-card__title">{title}</h2>
           <p className="film-card__meta">
-            <span className="film-card__genre">{firstFilm.genre}</span>
-            <span className="film-card__year">{firstFilm.released}</span>
+            <span className="film-card__genre">{genre}</span>
+            <span className="film-card__year">{releaseDate}</span>
           </p>
 
           <div className="film-card__buttons">

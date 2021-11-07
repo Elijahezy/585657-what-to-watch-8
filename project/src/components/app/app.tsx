@@ -12,19 +12,24 @@ import MyList from '../mylist/mylist';
 import PrivateRoute from '../private-route/private-route';
 
 type AppFilmsAmount = {
-  filmsData: Film[],
+  films: Film[],
+    promoFilmInfo: {
+    title: string;
+    genre: string;
+    releaseDate: number;
+  };
 }
 
 
-function App({filmsData}: AppFilmsAmount): JSX.Element {
+function App({films, promoFilmInfo }: AppFilmsAmount): JSX.Element {
   return (
     <BrowserRouter>
       <Switch>
         <Route exact path={AppRoute.Main}>
-          <MainPage filmsData={filmsData} />
+          <MainPage promoFilmInfo={promoFilmInfo} />
         </Route>
         <Route exact path={AppRoute.Films}>
-          <FilmPage filmsData={filmsData}/>
+          <FilmPage films={films}/>
         </Route>
         <Route exact path={AppRoute.Login}>
           <Login />
@@ -32,12 +37,12 @@ function App({filmsData}: AppFilmsAmount): JSX.Element {
         <PrivateRoute
           exact
           path={AppRoute.MyList}
-          render={() => <MyList filmsData={filmsData}/>}
+          render={() => <MyList films={films}/>}
           authorizationStatus={AuthorizationStatus.Auth}
         >
         </PrivateRoute>
         <Route exact path={AppRoute.Review}>
-          <Review filmsData={filmsData}/>
+          <Review films={films}/>
         </Route>
         <Route>
           <Error />

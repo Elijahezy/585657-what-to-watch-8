@@ -2,10 +2,10 @@ import { Film } from '../../mocks/types';
 import FilmSmallCard from '../films/film-small-card';
 
 type MyListProps = {
-  filmsData: Film[],
+  films: Film[],
 }
 
-function MyList({filmsData}:MyListProps): JSX.Element {
+function MyList({films}:MyListProps): JSX.Element {
   return (
     <div className="user-page">
       <header className="page-header user-page__head">
@@ -36,7 +36,7 @@ function MyList({filmsData}:MyListProps): JSX.Element {
 
         <div className="catalog__films-list">
           {
-            filmsData.map((film) => <FilmSmallCard key={film.id} films={ film }/>)
+            films.map((film) => <FilmSmallCard key={film.id} filmsSmallCard={ film }/>)
           }
         </div>
       </section>

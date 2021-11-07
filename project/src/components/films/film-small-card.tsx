@@ -16,9 +16,9 @@ const VIDEO_STYLES = {
   alignItems: 'center',
 };
 
-function FilmSmallCard({films}: {films: Film}): JSX.Element {
+function FilmSmallCard({filmsSmallCard}: {filmsSmallCard: Film}): JSX.Element {
 
-  const {id, name, posterImage, previewImage, previewVideoLink} = films;
+  const {id, name, posterImage, previewImage, previewVideoLink} = filmsSmallCard;
 
   const timer = useRef<NodeJS.Timeout | null>(null);
   const [ isHovered, setHovered ] = useState(false);
