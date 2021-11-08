@@ -4,7 +4,7 @@ import { State } from '../types/state';
 import { DEFAULT_GENRE, SHOWN_COUNT_FILMS } from '../const';
 import { films } from '../mocks/films';
 
-const initialState = {
+export const initialState: State = {
   activeGenre: DEFAULT_GENRE,
   films: films,
   limit: SHOWN_COUNT_FILMS,

@@ -15,5 +15,5 @@ export enum AuthorizationStatus {
 }
 
 export const DEFAULT_GENRE = 'All genres';
-export const SHOWN_COUNT_FILMS = 8;
+export const SHOWN_COUNT_FILMS = 4;
 export const MAX_NUMBER_GENRES = 10;
