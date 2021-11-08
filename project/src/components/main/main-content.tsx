@@ -1,15 +1,12 @@
-import FilmSmallCard from '../films/film-small-card';
 import {Film} from '../../mocks/types';
-import Genres from '../genres/genres';
-import { DEFAULT_GENRE, MAX_NUMBER_GENRES } from '../../const';
-import {films} from '../../mocks/films';
 import {State} from '../../types/state';
-import { Dispatch } from 'redux';
-import { Actions } from '../../types/action';
-import { resetLimit } from '../../store/action';
-import { connect, ConnectedProps } from 'react-redux';
-// import { SHOWN_COUNT_FILMS } from '../../const';
-import { useEffect } from 'react';
+import {DEFAULT_GENRE, MAX_NUMBER_GENRES} from '../../const';
+import {films} from '../../mocks/films';
+import {SHOWN_COUNT_FILMS} from '../../const';
+import FilmSmallCard from '../films/film-small-card';
+import Genres from '../genres/genres';
+import ShowMore from '../show-more/show-more';
+import {useSelector} from 'react-redux';
 
 const getGenres = (): string[] => {
   const genres = [DEFAULT_GENRE, ...new Set(films.map((film) => film.genre))];
@@ -26,41 +23,23 @@ const getFilteredFilms = (genre: string): Film[] =>
     ? films
     : films.filter((film) => film.genre === genre);
 
-const mapStateToProps = ({ activeGenre, limit }: State) => ({
-  activeGenre,
-  limit,
-});
 
-const mapDispatchToProps = (dispatch: Dispatch<Actions>) => ({
-  onResetLimit() {
-    dispatch(resetLimit());
-  },
-});
-
-const connector = connect(mapStateToProps, mapDispatchToProps);
-
-type PropsFromRedux = ConnectedProps<typeof connector>;
-
-function MainPageContent({activeGenre, limit, onResetLimit}: PropsFromRedux): JSX.Element {
-
+function MainPageContent(): JSX.Element {
+  const activeGenre = useSelector<State, string>((state) => state.activeGenre);
+  const limit = useSelector<State, number>((state) => state.limit);
   const filteredFilms = getFilteredFilms(activeGenre);
 
+
   const renderedFilms = filteredFilms.slice(0, limit);
-  // const isShowMoreVisible =
-  //   filteredFilms.length > SHOWN_COUNT_FILMS &&
-  //   filteredFilms.length !== renderedFilms.length;
-
-  useEffect(() => {
-    onResetLimit();
-  }, [onResetLimit]);
-
+  const isShowMoreVisible =
+    filteredFilms.length > SHOWN_COUNT_FILMS &&
+    filteredFilms.length !== renderedFilms.length;
 
   return (
     <div className="page-content">
       <section className="catalog">
         <h2 className="catalog__title visually-hidden">Catalog
         </h2>
-
         <ul className="catalog__genres-list">
           <Genres genres={getGenres()}/>
         </ul>
@@ -71,9 +50,7 @@ function MainPageContent({activeGenre, limit, onResetLimit}: PropsFromRedux): JS
           }
         </div>
 
-        <div className="catalog__more">
-          <button className="catalog__button" type="button">Show more</button>
-        </div>
+        {isShowMoreVisible && <ShowMore />}
       </section>
 
       <footer className="page-footer">
