@@ -9,16 +9,16 @@ import Reviews from '../tabs/reviews';
 import FilmSmallCard from './film-small-card';
 
 type FilmPageProps = {
-  filmsData: Film[]
+  films: Film[]
 }
 
 const SIMILAR_FILMS_MAX = 4;
 
-function FilmPage({filmsData}:FilmPageProps): JSX.Element {
+function FilmPage({films}:FilmPageProps): JSX.Element {
 
   const { id } = useParams<{ id: string }>();
 
-  const [currentFilm] = useState(() => filmsData.find((film) => film.id === parseFloat(id)));
+  const [currentFilm] = useState(() => films.find((film) => film.id === parseFloat(id)));
 
   const [activeTab, setActiveTab] = useState(<Overview currentFilm={currentFilm}/>);
 
@@ -35,7 +35,7 @@ function FilmPage({filmsData}:FilmPageProps): JSX.Element {
     }
   }
 
-  const [similarFilms] = useState(() => filmsData.filter((film) => film.genre === currentFilm?.genre && film.id !== currentFilm?.id).slice(0, SIMILAR_FILMS_MAX));
+  const [similarFilms] = useState(() => films.filter((film) => film.genre === currentFilm?.genre && film.id !== currentFilm?.id).slice(0, SIMILAR_FILMS_MAX));
 
   return (
     <>
@@ -81,6 +81,7 @@ function FilmPage({filmsData}:FilmPageProps): JSX.Element {
                   <svg viewBox="0 0 19 19" width="19" height="19">
                     <use xlinkHref="#play-s"></use>
                   </svg>
+                  <Link to={'/'}>Play</Link>
                   <span>Play</span>
                 </button>
                 <button className="btn btn--list film-card__button" type="button">
@@ -125,7 +126,7 @@ function FilmPage({filmsData}:FilmPageProps): JSX.Element {
         <section className="catalog catalog--like-this">
           <h2 className="catalog__title">More like this</h2>
           <div className="catalog__films-list">
-            {similarFilms.map((film) => <FilmSmallCard key={film.id + film.name} films={film}/>)}
+            {similarFilms.map((film) => <FilmSmallCard key={film.id + film.name} filmsSmallCard={film}/>)}
           </div>
         </section>
       </div>

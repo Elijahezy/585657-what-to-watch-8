@@ -5,16 +5,16 @@ import {
   Link } from 'react-router-dom';
 
 type ReviewProps = {
-  filmsData: Film[],
+  films: Film[],
 }
 
 const RATING_STARS = 10;
 
-function Review({filmsData}:ReviewProps): JSX.Element {
+function Review({films}:ReviewProps): JSX.Element {
 
   const { id } = useParams<{ id: string }>();
 
-  const [currentFilm] = useState(() => filmsData.find((film) => film.id === parseFloat(id)));
+  const [currentFilm] = useState(() => films.find((film) => film.id === parseFloat(id)));
 
   const [review, setReview] = useState('');
   const [rating, setRating] = useState(0);

@@ -1,14 +1,17 @@
 import React from 'react';
 import MainPageContent from './main-content';
 import FilmPreview from './film-preview';
-import {Film} from '../../mocks/types';
 
-type FilmsAmountProps = {
-  filmsData: Film[],
-}
+type MainScreenProps = {
+  promoFilmInfo: {
+    title: string;
+    genre: string;
+    releaseDate: number;
+  };
+};
 
-function MainPage({filmsData}: FilmsAmountProps): JSX.Element {
-  const [firstFilm] = filmsData;
+function MainPage({promoFilmInfo}: MainScreenProps): JSX.Element {
+
 
   return (
     <React.Fragment>
@@ -41,11 +44,11 @@ function MainPage({filmsData}: FilmsAmountProps): JSX.Element {
         </header>
 
         {
-          <FilmPreview firstFilm={firstFilm}/>
+          <FilmPreview promoFilmInfo={promoFilmInfo}/>
         }
       </section>
       {
-        <MainPageContent filmsData={filmsData}/>
+        <MainPageContent />
       }
     </React.Fragment>
   );

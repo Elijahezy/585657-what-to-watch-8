@@ -1,54 +1,73 @@
 import FilmSmallCard from '../films/film-small-card';
 import {Film} from '../../mocks/types';
+import Genres from '../genres/genres';
+import { DEFAULT_GENRE, MAX_NUMBER_GENRES } from '../../const';
+import {films} from '../../mocks/films';
+import {State} from '../../types/state';
+import { Dispatch } from 'redux';
+import { Actions } from '../../types/action';
+import { resetLimit } from '../../store/action';
+import { connect, ConnectedProps } from 'react-redux';
+// import { SHOWN_COUNT_FILMS } from '../../const';
+import { useEffect } from 'react';
 
-type FilmsAmountProps = {
-  filmsData: Film[],
+const getGenres = (): string[] => {
+  const genres = [DEFAULT_GENRE, ...new Set(films.map((film) => film.genre))];
 
-}
+  if (genres.length > MAX_NUMBER_GENRES) {
+    genres.length = MAX_NUMBER_GENRES;
+  }
 
-function MainPageContent({filmsData}: FilmsAmountProps): JSX.Element {
+  return genres;
+};
+
+const getFilteredFilms = (genre: string): Film[] =>
+  genre === DEFAULT_GENRE
+    ? films
+    : films.filter((film) => film.genre === genre);
+
+const mapStateToProps = ({ activeGenre, limit }: State) => ({
+  activeGenre,
+  limit,
+});
+
+const mapDispatchToProps = (dispatch: Dispatch<Actions>) => ({
+  onResetLimit() {
+    dispatch(resetLimit());
+  },
+});
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
+
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+function MainPageContent({activeGenre, limit, onResetLimit}: PropsFromRedux): JSX.Element {
+
+  const filteredFilms = getFilteredFilms(activeGenre);
+
+  const renderedFilms = filteredFilms.slice(0, limit);
+  // const isShowMoreVisible =
+  //   filteredFilms.length > SHOWN_COUNT_FILMS &&
+  //   filteredFilms.length !== renderedFilms.length;
+
+  useEffect(() => {
+    onResetLimit();
+  }, [onResetLimit]);
+
 
   return (
     <div className="page-content">
       <section className="catalog">
-        <h2 className="catalog__title visually-hidden">Catalog</h2>
+        <h2 className="catalog__title visually-hidden">Catalog
+        </h2>
 
         <ul className="catalog__genres-list">
-          <li className="catalog__genres-item catalog__genres-item--active">
-            <a href="/" className="catalog__genres-link">All genres</a>
-          </li>
-          <li className="catalog__genres-item">
-            <a href="/" className="catalog__genres-link">Comedies</a>
-          </li>
-          <li className="catalog__genres-item">
-            <a href="/" className="catalog__genres-link">Crime</a>
-          </li>
-          <li className="catalog__genres-item">
-            <a href="/" className="catalog__genres-link">Documentary</a>
-          </li>
-          <li className="catalog__genres-item">
-            <a href="/" className="catalog__genres-link">Dramas</a>
-          </li>
-          <li className="catalog__genres-item">
-            <a href="/" className="catalog__genres-link">Horror</a>
-          </li>
-          <li className="catalog__genres-item">
-            <a href="/" className="catalog__genres-link">Kids & Family</a>
-          </li>
-          <li className="catalog__genres-item">
-            <a href="/" className="catalog__genres-link">Romance</a>
-          </li>
-          <li className="catalog__genres-item">
-            <a href="/" className="catalog__genres-link">Sci-Fi</a>
-          </li>
-          <li className="catalog__genres-item">
-            <a href="/" className="catalog__genres-link">Thrillers</a>
-          </li>
+          <Genres genres={getGenres()}/>
         </ul>
 
         <div className="catalog__films-list">
           {
-            filmsData.map((film) => <FilmSmallCard key={film.id} films={ film }/>)
+            renderedFilms.map((film) => <FilmSmallCard key={film.id} filmsSmallCard={ film }/>)
           }
         </div>
 
