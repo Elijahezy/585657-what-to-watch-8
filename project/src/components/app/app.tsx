@@ -10,6 +10,7 @@ import Login from '../login/login';
 import Review from '../review/review';
 import MyList from '../mylist/mylist';
 import PrivateRoute from '../private-route/private-route';
+import Player from '../player/player';
 
 type AppFilmsAmount = {
   films: Film[],
@@ -43,6 +44,9 @@ function App({films, promoFilmInfo }: AppFilmsAmount): JSX.Element {
         </PrivateRoute>
         <Route exact path={AppRoute.Review}>
           <Review films={films}/>
+        </Route>
+        <Route exact path={AppRoute.Player}>
+          <Player films={films}/>
         </Route>
         <Route>
           <Error />
