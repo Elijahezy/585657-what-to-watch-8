@@ -10,23 +10,37 @@ import Login from '../login/login';
 import Review from '../review/review';
 import MyList from '../mylist/mylist';
 import PrivateRoute from '../private-route/private-route';
+import Player from '../player/player';
+import LoadingScreen from '../loading-screen/loading-screen';
+import {isCheckedAuth} from '../../utils';
+import {State} from '../../types/state';
+import {useSelector} from 'react-redux';
 
-type AppFilmsAmount = {
-  films: Film[],
-    promoFilmInfo: {
-    title: string;
-    genre: string;
-    releaseDate: number;
-  };
-}
+const Setting = {
+  PromoFilmInfo: {
+    title: 'The Grand Budapest Hotel',
+    genre: 'Drama',
+    releaseDate: 2014,
+  },
+};
 
 
-function App({films, promoFilmInfo }: AppFilmsAmount): JSX.Element {
+function App(): JSX.Element {
+  const authorizationStatus = useSelector<State, AuthorizationStatus>((state) => state.authorizationStatus);
+  const isDataLoaded = useSelector<State, boolean>((state) => state.isDataLoaded);
+  const films = useSelector<State, Film[]>((state) => state.films);
+
+  if (isCheckedAuth(authorizationStatus) || !isDataLoaded) {
+    return (
+      <LoadingScreen />
+    );
+  }
+
   return (
     <BrowserRouter>
       <Switch>
         <Route exact path={AppRoute.Main}>
-          <MainPage promoFilmInfo={promoFilmInfo} />
+          <MainPage promoFilmInfo={Setting.PromoFilmInfo} />
         </Route>
         <Route exact path={AppRoute.Films}>
           <FilmPage films={films}/>
@@ -43,6 +57,9 @@ function App({films, promoFilmInfo }: AppFilmsAmount): JSX.Element {
         </PrivateRoute>
         <Route exact path={AppRoute.Review}>
           <Review films={films}/>
+        </Route>
+        <Route exact path={AppRoute.Player}>
+          <Player films={films}/>
         </Route>
         <Route>
           <Error />

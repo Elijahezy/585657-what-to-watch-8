@@ -14,6 +14,12 @@ export enum AuthorizationStatus {
   Unknown = 'UNKNOWN',
 }
 
+export enum APIRoute {
+  Films = '/films',
+  Login = '/login',
+  Logout = '/logout',
+}
+
 export const DEFAULT_GENRE = 'All genres';
 export const SHOWN_COUNT_FILMS = 4;
 export const MAX_NUMBER_GENRES = 10;

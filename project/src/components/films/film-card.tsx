@@ -81,8 +81,7 @@ function FilmPage({films}:FilmPageProps): JSX.Element {
                   <svg viewBox="0 0 19 19" width="19" height="19">
                     <use xlinkHref="#play-s"></use>
                   </svg>
-                  <Link to={'/'}>Play</Link>
-                  <span>Play</span>
+                  <span><Link to={`/player/${id}`}>Play</Link></span>
                 </button>
                 <button className="btn btn--list film-card__button" type="button">
                   <svg viewBox="0 0 19 20" width="19" height="20">
