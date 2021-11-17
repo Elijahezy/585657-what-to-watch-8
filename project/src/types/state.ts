@@ -1,4 +1,4 @@
-import { Film } from '../mocks/types';
+import { Comment, Film, User } from './types';
 import { AuthorizationStatus } from '../const';
 
 export type State = {
@@ -7,4 +7,6 @@ export type State = {
   limit: number,
   authorizationStatus: AuthorizationStatus,
   isDataLoaded: boolean,
+  comments: Comment[],
+  user: User,
 };

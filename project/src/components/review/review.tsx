@@ -1,8 +1,9 @@
-import {Film} from '../../mocks/types';
+import {Film} from '../../types/types';
 import {useState} from 'react';
 import {
   useParams,
   Link } from 'react-router-dom';
+import Logo from '../logo/logo';
 
 type ReviewProps = {
   films: Film[],
@@ -30,13 +31,7 @@ function Review({films}:ReviewProps): JSX.Element {
         <h1 className="visually-hidden">WTW</h1>
 
         <header className="page-header">
-          <div className="logo">
-            <a href="/" className="logo__link">
-              <span className="logo__letter logo__letter--1">W</span>
-              <span className="logo__letter logo__letter--2">T</span>
-              <span className="logo__letter logo__letter--3">W</span>
-            </a>
-          </div>
+          {<Logo />}
 
           <nav className="breadcrumbs">
             <ul className="breadcrumbs__list">

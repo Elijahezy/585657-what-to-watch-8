@@ -18,6 +18,33 @@ export type Film = {
   isFavorite: boolean,
 };
 
+export type Comment = {
+  id: number,
+  user: {
+    id: number,
+    name: string,
+  }
+  rating: number,
+  comment: string,
+  date: string,
+}
+
+export type User = {
+  id: number,
+  email: string,
+  name: string,
+  avatarUrl: string,
+  token: string,
+}
+
+export type ServerUser = {
+  'id': number,
+  'email': string,
+  'name': string,
+  'avatar_url': string,
+  'token': string,
+}
+
 export type ServerFilm = {
   'id': number,
   'name': string,

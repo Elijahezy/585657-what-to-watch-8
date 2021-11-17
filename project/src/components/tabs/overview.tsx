@@ -1,11 +1,16 @@
-import {Film} from '../../mocks/types';
+import {Film} from '../../types/types';
 import React from 'react';
+import {useParams} from 'react-router';
+import {State} from '../../types/state';
+import {useSelector} from 'react-redux';
 
-type OverviewProps = {
-  currentFilm: Film | undefined,
-}
+function Overview(): JSX.Element {
 
-function Overview({currentFilm}:OverviewProps): JSX.Element {
+  const { id } = useParams<{ id: string }>();
+  const films = useSelector<State, Film[]>((state) => state.films);
+
+  const currentFilm = films.find((film) => film.id === parseFloat(id));
+
   return (
     <React.Fragment>
       <div className="film-rating">

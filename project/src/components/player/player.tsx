@@ -1,6 +1,6 @@
 import {useParams} from 'react-router-dom';
 import {useState} from 'react';
-import {Film} from '../../mocks/types';
+import {Film} from '../../types/types';
 
 type PlayerProps = {
   films: Film[],

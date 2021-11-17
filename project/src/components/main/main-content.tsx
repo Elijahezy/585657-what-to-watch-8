@@ -1,4 +1,4 @@
-import {Film} from '../../mocks/types';
+import {Film} from '../../types/types';
 import {State} from '../../types/state';
 import {SHOWN_COUNT_FILMS} from '../../const';
 import FilmSmallCard from '../films/film-small-card';
@@ -7,6 +7,8 @@ import ShowMore from '../show-more/show-more';
 import LoadingScreen from '../loading-screen/loading-screen';
 import {useSelector} from 'react-redux';
 import {getFilteredFilms, getGenres} from '../../utils';
+import Logo from '../logo/logo';
+
 
 function MainPageContent(): JSX.Element {
   const activeGenre = useSelector<State, string>((state) => state.activeGenre);
@@ -49,13 +51,7 @@ function MainPageContent(): JSX.Element {
       </section>
 
       <footer className="page-footer">
-        <div className="logo">
-          <a className="logo__link logo__link--light" href="/">
-            <span className="logo__letter logo__letter--1">W</span>
-            <span className="logo__letter logo__letter--2">T</span>
-            <span className="logo__letter logo__letter--3">W</span>
-          </a>
-        </div>
+        {<Logo className={'logo__link--light'}/>}
 
         <div className="copyright">
           <p>© 2019 What to watch Ltd.</p>

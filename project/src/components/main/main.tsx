@@ -1,6 +1,14 @@
-import React from 'react';
+/* eslint-disable no-console */
+import React, { useState } from 'react';
 import MainPageContent from './main-content';
 import FilmPreview from './film-preview';
+import Logo from '../logo/logo';
+import SignIn from '../sign/signin';
+import { useSelector } from 'react-redux';
+import { State } from '../../types/state';
+import { User } from '../../types/types';
+import SignOut from '../sign/signout';
+import {useEffect} from 'react';
 
 type MainScreenProps = {
   promoFilmInfo: {
@@ -11,7 +19,18 @@ type MainScreenProps = {
 };
 
 function MainPage({promoFilmInfo}: MainScreenProps): JSX.Element {
+  const user = useSelector<State, User>((state) => state.user);
+  const [userStatus, setUserStatus] = useState(<SignIn />);
 
+
+  useEffect(() => {
+    if (user.id === undefined) {
+      return setUserStatus(<SignIn />);
+    }
+    return setUserStatus(<SignOut />);
+  }, [user]);
+
+  console.log(user.id);
 
   return (
     <React.Fragment>
@@ -23,24 +42,9 @@ function MainPage({promoFilmInfo}: MainScreenProps): JSX.Element {
         <h1 className="visually-hidden">WTW</h1>
 
         <header className="page-header film-card__head">
-          <div className="logo">
-            <a className="logo__link" href="/">
-              <span className="logo__letter logo__letter--1">W</span>
-              <span className="logo__letter logo__letter--2">T</span>
-              <span className="logo__letter logo__letter--3">W</span>
-            </a>
-          </div>
+          {<Logo/>}
 
-          <ul className="user-block">
-            <li className="user-block__item">
-              <div className="user-block__avatar">
-                <img src="img/avatar.jpg" alt="User avatar" width="63" height="63" />
-              </div>
-            </li>
-            <li className="user-block__item">
-              <a className="user-block__link" href="/">Sign out</a>
-            </li>
-          </ul>
+          {userStatus}
         </header>
 
         {
