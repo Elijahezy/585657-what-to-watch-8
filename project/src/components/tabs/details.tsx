@@ -1,10 +1,15 @@
-import {Film} from '../../mocks/types';
+import {Film} from '../../types/types';
+import {useParams} from 'react-router';
+import {State} from '../../types/state';
+import {useSelector} from 'react-redux';
 
-type DetailsProps = {
-  currentFilm: Film | undefined,
-}
+function Details(): JSX.Element {
 
-function Details({currentFilm}:DetailsProps): JSX.Element {
+  const { id } = useParams<{ id: string }>();
+  const films = useSelector<State, Film[]>((state) => state.films);
+
+  const currentFilm = films.find((film) => film.id === parseFloat(id));
+
   return (
     <div className="film-card__text film-card__row">
       <div className="film-card__text-col">

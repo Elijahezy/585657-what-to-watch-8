@@ -1,4 +1,4 @@
-import {Film} from '../../mocks/types';
+import {Film} from '../../types/types';
 import { Link, useHistory } from 'react-router-dom';
 import { useEffect, useState, useRef } from 'react';
 

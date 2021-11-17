@@ -1,4 +1,5 @@
-
+import {useHistory} from 'react-router';
+import {AppRoute} from '../../const';
 
 type FilmPreviewProps = {
   promoFilmInfo: {
@@ -12,6 +13,8 @@ type FilmPreviewProps = {
 function FilmPreview({promoFilmInfo}:FilmPreviewProps): JSX.Element {
 
   const {title, genre, releaseDate} = promoFilmInfo;
+
+  const history = useHistory();
 
   return (
     <div className="film-card__wrap">
@@ -34,7 +37,7 @@ function FilmPreview({promoFilmInfo}:FilmPreviewProps): JSX.Element {
               </svg>
               <span>Play</span>
             </button>
-            <button className="btn btn--list film-card__button" type="button">
+            <button className="btn btn--list film-card__button" type="button"  onClick={() => history.push(AppRoute.MyList)}>
               <svg viewBox="0 0 19 20" width="19" height="20">
                 <use xlinkHref="#add"></use>
               </svg>

@@ -1,5 +1,5 @@
 import {AuthorizationStatus, DEFAULT_GENRE, MAX_NUMBER_GENRES} from './const';
-import {Film, ServerFilm} from './mocks/types';
+import {Film, ServerFilm, ServerUser, User} from './types/types';
 
 export const isCheckedAuth = (authorizationStatus: AuthorizationStatus): boolean =>
   authorizationStatus === AuthorizationStatus.Unknown;
@@ -38,3 +38,15 @@ export const adaptToClient = (serverFilm: ServerFilm):Film => {
   );
   return adaptedFilm;
 };
+
+export const adaptUserDataToClient = (serverUser: ServerUser):User => {
+  const adaptedUser = Object.assign(
+    {},
+    serverUser,
+    {
+      avatarUrl: serverUser['avatar_url'],
+    },
+  );
+  return adaptedUser;
+};
+

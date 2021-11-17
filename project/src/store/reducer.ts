@@ -10,6 +10,14 @@ export const initialState: State = {
   limit: SHOWN_COUNT_FILMS,
   authorizationStatus: AuthorizationStatus.Unknown,
   isDataLoaded: false,
+  comments: [],
+  user: {
+    id: 0,
+    email: '',
+    name: '',
+    avatarUrl: '',
+    token: '',
+  },
 };
 
 const reducer = (state: State = initialState, action: Actions): State => {
@@ -26,6 +34,10 @@ const reducer = (state: State = initialState, action: Actions): State => {
       const {films} = action.payload;
       return { ...state, films};
     }
+    case ActionTypes.LoadComments: {
+      const {comments} = action.payload;
+      return { ...state, comments};
+    }
     case ActionTypes.RequireAuthorization:
       return {
         ...state,
@@ -34,6 +46,10 @@ const reducer = (state: State = initialState, action: Actions): State => {
       };
     case ActionTypes.RequireLogout:
       return {...state, authorizationStatus: AuthorizationStatus.NoAuth};
+    case ActionTypes.LoadUser: {
+      const {user} = action.payload;
+      return { ...state, user};
+    }
     default:
       return state;
   }

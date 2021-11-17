@@ -1,12 +1,17 @@
-import { Film } from '../../mocks/types';
+/* eslint-disable no-console */
+import { Film } from '../../types/types';
 import {
   useParams,
   Link } from 'react-router-dom';
+import { useHistory } from 'react-router';
 import {useState} from 'react';
 import Overview from '../tabs/overview';
 import Details from '../tabs/details';
 import Reviews from '../tabs/reviews';
 import FilmSmallCard from './film-small-card';
+import { AppRoute } from '../../const';
+import Logo from '../logo/logo';
+import {useEffect} from 'react';
 
 type FilmPageProps = {
   films: Film[]
@@ -18,17 +23,31 @@ function FilmPage({films}:FilmPageProps): JSX.Element {
 
   const { id } = useParams<{ id: string }>();
 
-  const [currentFilm] = useState(() => films.find((film) => film.id === parseFloat(id)));
+  const [currentFilm, setCurrentFilm] = useState<Film | undefined>(() => films.find((film) => film.id === parseFloat(id)));
+  const [activeTab, setActiveTab] = useState(<Overview />);
+  const history = useHistory();
 
-  const [activeTab, setActiveTab] = useState(<Overview currentFilm={currentFilm}/>);
+  useEffect(() => {
+    if (films.length && id) {
+      const curr = films.find((film) => film.id === parseFloat(id));
+      if (!curr) {
+        return history.push(AppRoute.Error);
+      }
+      setCurrentFilm(curr);
+    }
+
+  }, [films, history, id]);
 
   function getTab(tab:string) {
+    if (!currentFilm) {
+      return;
+    }
     switch(tab) {
       case 'Overview':
-        setActiveTab(<Overview currentFilm={currentFilm}/>);
+        setActiveTab(<Overview />);
         break;
       case 'Details':
-        setActiveTab(<Details currentFilm={currentFilm}/>);
+        setActiveTab(<Details />);
         break;
       case 'Reviews':
         setActiveTab(<Reviews/>);
@@ -48,13 +67,7 @@ function FilmPage({films}:FilmPageProps): JSX.Element {
           <h1 className="visually-hidden">WTW</h1>
 
           <header className="page-header film-card__head">
-            <div className="logo">
-              <a href="/" className="logo__link">
-                <span className="logo__letter logo__letter--1">W</span>
-                <span className="logo__letter logo__letter--2">T</span>
-                <span className="logo__letter logo__letter--3">W</span>
-              </a>
-            </div>
+            {<Logo />}
 
             <ul className="user-block">
               <li className="user-block__item">
@@ -77,13 +90,13 @@ function FilmPage({films}:FilmPageProps): JSX.Element {
               </p>
 
               <div className="film-card__buttons">
-                <button className="btn btn--play film-card__button" type="button">
+                <button className="btn btn--play film-card__button" type="button" onClick={() => history.push(`/player/${id}`)}>
                   <svg viewBox="0 0 19 19" width="19" height="19">
                     <use xlinkHref="#play-s"></use>
                   </svg>
-                  <span><Link to={`/player/${id}`}>Play</Link></span>
+                  <span>Play</span>
                 </button>
-                <button className="btn btn--list film-card__button" type="button">
+                <button className="btn btn--list film-card__button" type="button" onClick={() => history.push('/mylist')}>
                   <svg viewBox="0 0 19 20" width="19" height="20">
                     <use xlinkHref="#add"></use>
                   </svg>
@@ -98,7 +111,7 @@ function FilmPage({films}:FilmPageProps): JSX.Element {
         <div className="film-card__wrap film-card__translate-top">
           <div className="film-card__info">
             <div className="film-card__poster film-card__poster--big">
-              <img src={currentFilm?.previewImage} alt={currentFilm?.name} width="218" height="327" />
+              <img src={currentFilm?.posterImage} alt={currentFilm?.name} width="218" height="327" />
             </div>
 
             <div className="film-card__desc">

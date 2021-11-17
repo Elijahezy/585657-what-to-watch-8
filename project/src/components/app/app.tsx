@@ -1,8 +1,7 @@
-import { BrowserRouter } from 'react-router-dom';
-import { Switch } from 'react-router';
+import { Switch, Router as BrowserRouter } from 'react-router';
 import { Route } from 'react-router';
 import {AppRoute, AuthorizationStatus} from '../../const';
-import { Film } from '../../mocks/types';
+import { Film } from '../../types/types';
 import MainPage from '../main/main';
 import Error from '../error/error';
 import FilmPage from '../films/film-card';
@@ -15,6 +14,7 @@ import LoadingScreen from '../loading-screen/loading-screen';
 import {isCheckedAuth} from '../../utils';
 import {State} from '../../types/state';
 import {useSelector} from 'react-redux';
+import browserHistory from '../../browser-history';
 
 const Setting = {
   PromoFilmInfo: {
@@ -26,9 +26,11 @@ const Setting = {
 
 
 function App(): JSX.Element {
-  const authorizationStatus = useSelector<State, AuthorizationStatus>((state) => state.authorizationStatus);
+
   const isDataLoaded = useSelector<State, boolean>((state) => state.isDataLoaded);
   const films = useSelector<State, Film[]>((state) => state.films);
+  const authorizationStatus = useSelector<State, AuthorizationStatus>((state) => state.authorizationStatus);
+
 
   if (isCheckedAuth(authorizationStatus) || !isDataLoaded) {
     return (
@@ -37,7 +39,7 @@ function App(): JSX.Element {
   }
 
   return (
-    <BrowserRouter>
+    <BrowserRouter history={browserHistory}>
       <Switch>
         <Route exact path={AppRoute.Main}>
           <MainPage promoFilmInfo={Setting.PromoFilmInfo} />
@@ -52,7 +54,6 @@ function App(): JSX.Element {
           exact
           path={AppRoute.MyList}
           render={() => <MyList films={films}/>}
-          authorizationStatus={AuthorizationStatus.Auth}
         >
         </PrivateRoute>
         <Route exact path={AppRoute.Review}>

@@ -1,10 +1,9 @@
+/* eslint-disable no-console */
 import {useRef, FormEvent} from 'react';
-// import {useHistory} from 'react-router-dom';
 import {useDispatch} from 'react-redux';
 import {loginAction} from '../../store/api-actions';
 import {ThunkAppDispatch} from '../../types/action';
-// import {AuthData} from '../../types/auth-data';
-// import {AppRoute} from '../../const';
+import Logo from '../logo/logo';
 
 function Login(): JSX.Element {
 
@@ -13,14 +12,12 @@ function Login(): JSX.Element {
 
   const dispatch = useDispatch<ThunkAppDispatch>();
 
-  // const history = useHistory(); ещё буду дописывать
-
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
-
+    console.log('asdasd');
     if (loginRef.current !== null && passwordRef.current !== null) {
       dispatch(loginAction({
-        login: loginRef.current.value,
+        email: loginRef.current.value,
         password: passwordRef.current.value,
       }));
     }
@@ -29,23 +26,13 @@ function Login(): JSX.Element {
   return (
     <div className="user-page">
       <header className="page-header user-page__head">
-        <div className="logo">
-          <a href="main.html" className="logo__link">
-            <span className="logo__letter logo__letter--1">W</span>
-            <span className="logo__letter logo__letter--2">T</span>
-            <span className="logo__letter logo__letter--3">W</span>
-          </a>
-        </div>
+        {<Logo/>}
 
         <h1 className="page-title user-page__title">Sign in</h1>
       </header>
 
       <div className="sign-in user-page__content">
-        <form
-          action="#"
-          className="sign-in__form"
-          onSubmit={handleSubmit}
-        >
+        <form className="sign-in__form" onSubmit={handleSubmit}>
           <div className="sign-in__fields">
             <div className="sign-in__field">
               <input
@@ -76,13 +63,7 @@ function Login(): JSX.Element {
       </div>
 
       <footer className="page-footer">
-        <div className="logo">
-          <a href="main.html" className="logo__link logo__link--light">
-            <span className="logo__letter logo__letter--1">W</span>
-            <span className="logo__letter logo__letter--2">T</span>
-            <span className="logo__letter logo__letter--3">W</span>
-          </a>
-        </div>
+        {<Logo className={'logo__link--light'}/>}
 
         <div className="copyright">
           <p>© 2019 What to watch Ltd.</p>
