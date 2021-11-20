@@ -11,10 +11,10 @@ import Logo from '../logo/logo';
 
 
 function MainPageContent(): JSX.Element {
-  const activeGenre = useSelector<State, string>((state) => state.activeGenre);
-  const limit = useSelector<State, number>((state) => state.limit);
-  const films = useSelector<State, Film[]>((state) => state.films);
-  const isDataLoaded = useSelector<State, boolean>((state) => state.isDataLoaded);
+  const activeGenre = useSelector<State, string>((state) => state.FILMS.activeGenre);
+  const limit = useSelector<State, number>((state) => state.FILMS.limit);
+  const films = useSelector<State, Film[]>((state) => state.DATA.films);
+  const isDataLoaded = useSelector<State, boolean>((state) => state.USER.isDataLoaded);
 
   const filteredFilms = getFilteredFilms(activeGenre, films);
   const renderedFilms = filteredFilms.slice(0, limit);

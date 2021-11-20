@@ -1,9 +1,8 @@
-/* eslint-disable no-console */
 import {ThunkActionResult} from '../types/action';
 import {loadComments, loadFilms, loadUser, requireAuthorization, requireLogout, redirectToRoute} from './action';
 import {saveToken, dropToken, Token} from '../services/token';
 import {APIRoute, AuthorizationStatus, AppRoute} from '../const';
-import {Comment, ServerFilm} from '../types/types';
+import {Comment, CommentPost, ServerFilm} from '../types/types';
 import {AuthData} from '../types/auth-data';
 import { adaptToClient, adaptUserDataToClient } from '../utils';
 
@@ -37,8 +36,13 @@ export const loginAction = ({email, password}: AuthData): ThunkActionResult =>
   async (dispatch, _getState, api) => {
     const {data: {token}} = await api.post<{token: Token}>(APIRoute.Login, {email, password});
     saveToken(token);
-    dispatch(requireAuthorization(AuthorizationStatus.Auth));
     dispatch(redirectToRoute(AppRoute.Main));
+    dispatch(requireAuthorization(AuthorizationStatus.Auth));
+  };
+
+export const commentPostAction = ({id, rating, comment}: CommentPost): ThunkActionResult =>
+  async (dispatch, _getState, api) => {
+    await api.post(`${APIRoute.Comments}/${id}`, {rating, comment});
   };
 
 

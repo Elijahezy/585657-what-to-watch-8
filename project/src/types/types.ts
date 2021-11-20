@@ -18,6 +18,12 @@ export type Film = {
   isFavorite: boolean,
 };
 
+export type CommentPost = {
+  id: string,
+  rating: number,
+  comment: string,
+}
+
 export type Comment = {
   id: number,
   user: {

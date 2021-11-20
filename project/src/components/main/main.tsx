@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import React, { useState } from 'react';
 import MainPageContent from './main-content';
 import FilmPreview from './film-preview';
@@ -19,18 +18,16 @@ type MainScreenProps = {
 };
 
 function MainPage({promoFilmInfo}: MainScreenProps): JSX.Element {
-  const user = useSelector<State, User>((state) => state.user);
-  const [userStatus, setUserStatus] = useState(<SignIn />);
 
+  const [userStatus, setUserStatus] = useState(<SignOut />);
+  const user = useSelector<State, User>((state) => state.USER.user);
 
   useEffect(() => {
-    if (user.id === undefined) {
+    if (user.id === undefined || user.id === 0) {
       return setUserStatus(<SignIn />);
     }
     return setUserStatus(<SignOut />);
-  }, [user]);
-
-  console.log(user.id);
+  }, [user.id]);
 
   return (
     <React.Fragment>

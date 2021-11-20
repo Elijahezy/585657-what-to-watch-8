@@ -7,7 +7,7 @@ import {useSelector} from 'react-redux';
 function Overview(): JSX.Element {
 
   const { id } = useParams<{ id: string }>();
-  const films = useSelector<State, Film[]>((state) => state.films);
+  const films = useSelector<State, Film[]>((state) => state.DATA.films);
 
   const currentFilm = films.find((film) => film.id === parseFloat(id));
 

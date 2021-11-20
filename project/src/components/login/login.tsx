@@ -1,4 +1,4 @@
-/* eslint-disable no-console */
+
 import {useRef, FormEvent} from 'react';
 import {useDispatch} from 'react-redux';
 import {loginAction} from '../../store/api-actions';
@@ -14,7 +14,6 @@ function Login(): JSX.Element {
 
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
-    console.log('asdasd');
     if (loginRef.current !== null && passwordRef.current !== null) {
       dispatch(loginAction({
         email: loginRef.current.value,

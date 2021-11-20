@@ -13,8 +13,8 @@ type RenderFuncProps = {
 type PrivateRouteProps = RouteProps & {
   render: (props: RenderFuncProps) => JSX.Element;
 }
-const mapStateToProps = ({authorizationStatus}: State) => ({
-  authorizationStatus,
+const mapStateToProps = ({USER}: State) => ({
+  authorizationStatus: USER.authorizationStatus,
 });
 
 const connector = connect(mapStateToProps);
@@ -25,7 +25,7 @@ type ConnectedComponentProps = PropsFromRedux & PrivateRouteProps;
 function PrivateRoute(props: ConnectedComponentProps): JSX.Element {
   const {exact, path, render} = props;
 
-  const status = useSelector<State, string>((state) => state.authorizationStatus);
+  const status = useSelector<State, string>((state) => state.USER.authorizationStatus);
   return (
     <Route
       exact={exact}

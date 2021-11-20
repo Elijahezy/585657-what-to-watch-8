@@ -18,7 +18,7 @@ export enum ActionTypes {
   LoadUser = 'user/loadUser',
   RequireAuthorization = 'user/requireAuthorization',
   RequireLogout = 'user/requireLogout',
-  RedirectToRoute = 'game/redirectToRoute',
+  RedirectToRoute = 'redirect/redirectToRoute',
 }
 
 export type Actions =
