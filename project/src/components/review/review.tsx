@@ -1,9 +1,18 @@
 import {Film} from '../../types/types';
-import {useState} from 'react';
+import {FormEvent, useState} from 'react';
 import {
   useParams,
   Link } from 'react-router-dom';
 import Logo from '../logo/logo';
+import { useDispatch } from 'react-redux';
+import { ThunkAppDispatch } from '../../types/action';
+import { commentPostAction } from '../../store/api-actions';
+import {useEffect} from 'react';
+import {useSelector} from 'react-redux';
+import {State} from '../../types/state';
+import {User} from '../../types/types';
+import SignIn from '../sign/signin';
+import SignOut from '../sign/signout';
 
 type ReviewProps = {
   films: Film[],
@@ -17,8 +26,28 @@ function Review({films}:ReviewProps): JSX.Element {
 
   const [currentFilm] = useState(() => films.find((film) => film.id === parseFloat(id)));
 
-  const [review, setReview] = useState('');
+  const [comment, setComment] = useState('');
   const [rating, setRating] = useState(0);
+
+  const dispatch = useDispatch<ThunkAppDispatch>();
+
+  const [userStatus, setUserStatus] = useState(<SignOut />);
+  const user = useSelector<State, User>((state) => state.USER.user);
+
+  useEffect(() => {
+    if (user.id === undefined || user.id === 0) {
+      return setUserStatus(<SignIn />);
+    }
+    return setUserStatus(<SignOut />);
+  }, [user]);
+
+  const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
+    evt.preventDefault();
+
+    if (rating !== 0 && comment !== '') {
+      dispatch(commentPostAction({id, rating, comment}));
+    }
+  };
 
 
   return (
@@ -44,16 +73,7 @@ function Review({films}:ReviewProps): JSX.Element {
             </ul>
           </nav>
 
-          <ul className="user-block">
-            <li className="user-block__item">
-              <div className="user-block__avatar">
-                <img src="img/avatar.jpg" alt="User avatar" width="63" height="63" />
-              </div>
-            </li>
-            <li className="user-block__item">
-              <a className="user-block__link" href="/">Sign out</a>
-            </li>
-          </ul>
+          {userStatus}
         </header>
 
         <div className="film-card__poster film-card__poster--small">
@@ -62,11 +82,11 @@ function Review({films}:ReviewProps): JSX.Element {
       </div>
 
       <div className="add-review">
-        <form action="#" className="add-review__form">
+        <form className="add-review__form" onSubmit={handleSubmit}>
           <div className="rating">
             <div className="rating__stars">
               {
-                new Array(RATING_STARS).fill('').map((value, index) => <><input className="rating__input" id={`star-${index}`} type="radio" name="rating" value={rating} onChange={(e) => setRating(parseFloat(e.target.value))}/><label className="rating__label" htmlFor={`star-${index}`}>Rating {index}</label></>)
+                new Array(RATING_STARS).fill('').map((value, index) => <><input className="rating__input" id={`star-${index}`} type="radio" name="rating" value={index} onChange={(e) => setRating(parseFloat(e.target.value))}/><label className="rating__label" htmlFor={`star-${index}`}>Rating {index}</label></>)
               }
             </div>
           </div>
@@ -76,8 +96,8 @@ function Review({films}:ReviewProps): JSX.Element {
               name="review-text"
               id="review-text"
               placeholder="Review text"
-              value={review}
-              onChange={(e) => setReview(e.target.value)}
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
             >
             </textarea>
             <div className="add-review__submit">

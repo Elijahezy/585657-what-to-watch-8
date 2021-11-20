@@ -19,7 +19,7 @@ function Reviews(): JSX.Element {
   }, [dispatch, id]);
 
 
-  const comments = useSelector<State, CommentType[]>((state) => state.comments);
+  const comments = useSelector<State, CommentType[]>((state) => state.DATA.comments);
 
   return (
     <div className="film-card__reviews film-card__row">

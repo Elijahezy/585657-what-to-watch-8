@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { useDispatch, useSelector} from 'react-redux';
 import { logoutAction } from '../../store/api-actions';
 import { State } from '../../types/state';
@@ -11,8 +10,7 @@ function SignOut (): JSX.Element {
     dispatch(logoutAction());
   };
 
-  const user = useSelector<State, User>((state) => state.user);
-  console.log(user);
+  const user = useSelector<State, User>((state) => state.USER.user);
 
   return (
     <ul className="user-block">

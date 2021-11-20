@@ -12,6 +12,11 @@ import FilmSmallCard from './film-small-card';
 import { AppRoute } from '../../const';
 import Logo from '../logo/logo';
 import {useEffect} from 'react';
+import {useSelector} from 'react-redux';
+import {State} from '../../types/state';
+import {User} from '../../types/types';
+import SignIn from '../sign/signin';
+import SignOut from '../sign/signout';
 
 type FilmPageProps = {
   films: Film[]
@@ -25,6 +30,12 @@ function FilmPage({films}:FilmPageProps): JSX.Element {
 
   const [currentFilm, setCurrentFilm] = useState<Film | undefined>(() => films.find((film) => film.id === parseFloat(id)));
   const [activeTab, setActiveTab] = useState(<Overview />);
+
+  const user = useSelector<State, User>((state) => state.USER.user);
+  const [userStatus, setUserStatus] = useState(<SignIn />);
+
+  const [addReviewState, setAddReviewState] = useState(false);
+
   const history = useHistory();
 
   useEffect(() => {
@@ -37,6 +48,20 @@ function FilmPage({films}:FilmPageProps): JSX.Element {
     }
 
   }, [films, history, id]);
+
+  useEffect(() => {
+    if (user.id === undefined || user.id === 0) {
+      return setUserStatus(<SignIn />);
+    }
+    return setUserStatus(<SignOut />);
+  }, [user]);
+
+  useEffect(() => {
+    if (user.id === undefined || user.id === 0) {
+      return setAddReviewState(false);
+    }
+    return setAddReviewState(true);
+  }, [user]);
 
   function getTab(tab:string) {
     if (!currentFilm) {
@@ -69,16 +94,7 @@ function FilmPage({films}:FilmPageProps): JSX.Element {
           <header className="page-header film-card__head">
             {<Logo />}
 
-            <ul className="user-block">
-              <li className="user-block__item">
-                <div className="user-block__avatar">
-                  <img src="img/avatar.jpg" alt="User avatar" width="63" height="63" />
-                </div>
-              </li>
-              <li className="user-block__item">
-                <a className="user-block__link" href="/">Sign out</a>
-              </li>
-            </ul>
+            {userStatus}
           </header>
 
           <div className="film-card__wrap">
@@ -102,7 +118,7 @@ function FilmPage({films}:FilmPageProps): JSX.Element {
                   </svg>
                   <span>My list</span>
                 </button>
-                <Link to={`/films/${id}/review`} className="btn film-card__button">Add review</Link>
+                {addReviewState ?<Link to={`/films/${id}/review`} className="btn film-card__button">Add review</Link> : ''}
               </div>
             </div>
           </div>

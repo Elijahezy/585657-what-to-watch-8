@@ -16,6 +16,7 @@ import {State} from '../../types/state';
 import {useSelector} from 'react-redux';
 import browserHistory from '../../browser-history';
 
+
 const Setting = {
   PromoFilmInfo: {
     title: 'The Grand Budapest Hotel',
@@ -27,9 +28,9 @@ const Setting = {
 
 function App(): JSX.Element {
 
-  const isDataLoaded = useSelector<State, boolean>((state) => state.isDataLoaded);
-  const films = useSelector<State, Film[]>((state) => state.films);
-  const authorizationStatus = useSelector<State, AuthorizationStatus>((state) => state.authorizationStatus);
+  const isDataLoaded = useSelector<State, boolean>((state) => state.USER.isDataLoaded);
+  const films = useSelector<State, Film[]>((state) => state.DATA.films);
+  const authorizationStatus = useSelector<State, AuthorizationStatus>((state) => state.USER.authorizationStatus);
 
 
   if (isCheckedAuth(authorizationStatus) || !isDataLoaded) {
