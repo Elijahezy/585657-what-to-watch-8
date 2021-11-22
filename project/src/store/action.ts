@@ -63,3 +63,31 @@ export const redirectToRoute = createAction(
     payload: url,
   }),
 );
+
+export const loadPromoFilm = createAction(
+  ActionTypes.LoadPromoFilm,
+  (promo: Film) => ({
+    payload: promo,
+  }),
+);
+
+export const loadFavoriteFilms = createAction(
+  ActionTypes.LoadFavoriteFilms,
+  (favoriteFilms: Film[]) => ({
+    payload: favoriteFilms,
+  }),
+);
+
+export const upLoadFavoriteFilm = createAction(
+  ActionTypes.UpLoadFavoriteFilm,
+  (favoriteFilm: Film) => ({
+    payload: favoriteFilm,
+  }),
+);
+
+export const deleteFavoriteFilm = createAction(
+  ActionTypes.DeleteFavoriteFilm,
+  (favoriteFilm: Film) => ({
+    payload: favoriteFilm,
+  }),
+);

@@ -1,4 +1,4 @@
-import { changeActiveGenre, getFilms, incrementLimit, loadFilms, resetLimit, requireAuthorization, requireLogout, loadComments, loadUser,   redirectToRoute } from '../store/action';
+import { changeActiveGenre, getFilms, incrementLimit, loadFilms, resetLimit, requireAuthorization, requireLogout, loadComments, loadUser,   redirectToRoute, loadPromoFilm, loadFavoriteFilms, upLoadFavoriteFilm, deleteFavoriteFilm } from '../store/action';
 import {
   ThunkAction,
   ThunkDispatch
@@ -19,6 +19,10 @@ export enum ActionTypes {
   RequireAuthorization = 'user/requireAuthorization',
   RequireLogout = 'user/requireLogout',
   RedirectToRoute = 'redirect/redirectToRoute',
+  LoadPromoFilm = 'data/loadPromoFilm',
+  LoadFavoriteFilms = 'data/loadFavoriteFilms',
+  UpLoadFavoriteFilm = 'data/upLoadFavoriteFilm',
+  DeleteFavoriteFilm = 'data/deleteFavoriteFilm',
 }
 
 export type Actions =
@@ -31,7 +35,11 @@ export type Actions =
   | ReturnType<typeof requireLogout>
   | ReturnType<typeof loadComments>
   | ReturnType<typeof loadUser>
-  | ReturnType<typeof redirectToRoute>;
+  | ReturnType<typeof redirectToRoute>
+  | ReturnType<typeof loadPromoFilm>
+  | ReturnType<typeof loadFavoriteFilms>
+  | ReturnType<typeof upLoadFavoriteFilm>
+  | ReturnType<typeof deleteFavoriteFilm>;
 
 
 export type ThunkActionResult<R = Promise<void>> = ThunkAction<R, State, AxiosInstance, Actions>;

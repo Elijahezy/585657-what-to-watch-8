@@ -1,10 +1,11 @@
 import {ThunkActionResult} from '../types/action';
-import {loadComments, loadFilms, loadUser, requireAuthorization, requireLogout, redirectToRoute} from './action';
+import {loadComments, loadFilms, loadUser, requireAuthorization, requireLogout, redirectToRoute, loadPromoFilm, loadFavoriteFilms} from './action';
 import {saveToken, dropToken, Token} from '../services/token';
 import {APIRoute, AuthorizationStatus, AppRoute} from '../const';
 import {Comment, CommentPost, ServerFilm} from '../types/types';
 import {AuthData} from '../types/auth-data';
 import { adaptToClient, adaptUserDataToClient } from '../utils';
+import { Dispatch, SetStateAction } from 'react';
 
 export const fetchFilmsAction = (): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
@@ -17,6 +18,23 @@ export const fetchCommentsAction = (id: string): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
     const {data} = await api.get<Comment[]>(`${APIRoute.Comments}/${id}`);
     dispatch(loadComments(data));
+  };
+
+export const fetchPromoAction = (): ThunkActionResult =>
+  async (dispatch, _getState, api): Promise<void> => {
+    const {data} = await api.get<ServerFilm>(APIRoute.Promo);
+    const adaptedData = adaptToClient(data);
+    dispatch(loadPromoFilm(adaptedData));
+  };
+
+export const fetchFavoriteFilmsAction = (): ThunkActionResult =>
+  async (dispatch, _getState, api): Promise<void> => {
+    const {data} = await api.get<ServerFilm[]>(APIRoute.Favorite);
+    if (!data) {
+      return;
+    }
+    const adaptedData = data.map((film) => adaptToClient(film));
+    dispatch(loadFavoriteFilms(adaptedData));
   };
 
 export const checkAuthAction = (): ThunkActionResult =>
@@ -45,6 +63,23 @@ export const commentPostAction = ({id, rating, comment}: CommentPost): ThunkActi
     await api.post(`${APIRoute.Comments}/${id}`, {rating, comment});
   };
 
+export const favoriteFilmPostAction = (id: number, setFilm?: Dispatch<SetStateAction<boolean>>): ThunkActionResult =>
+  async (dispatch, _getState, api) => {
+    const {data} = await api.get<ServerFilm[]>(APIRoute.Favorite);
+    if (!data) {
+      return;
+    }
+    if (data.find((film) => film.id === id)) {
+      if (setFilm) {
+        setFilm(false);
+      }
+      return await api.post(`${APIRoute.Favorite}/${id}/0`);
+    }
+    if (setFilm) {
+      setFilm(true);
+    }
+    return await api.post(`${APIRoute.Favorite}/${id}/1`);
+  };
 
 export const logoutAction = (): ThunkActionResult =>
   async (dispatch, _getState, api) => {
@@ -53,3 +88,4 @@ export const logoutAction = (): ThunkActionResult =>
     dispatch(loadUser({id: 0, email: '', name: '', avatarUrl: '', token: ''}));
     dispatch(requireLogout());
   };
+

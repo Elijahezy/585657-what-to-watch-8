@@ -4,7 +4,7 @@ import {
   useParams,
   Link } from 'react-router-dom';
 import { useHistory } from 'react-router';
-import {useState} from 'react';
+import {Dispatch, SetStateAction, useState} from 'react';
 import Overview from '../tabs/overview';
 import Details from '../tabs/details';
 import Reviews from '../tabs/reviews';
@@ -12,30 +12,32 @@ import FilmSmallCard from './film-small-card';
 import { AppRoute } from '../../const';
 import Logo from '../logo/logo';
 import {useEffect} from 'react';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {State} from '../../types/state';
 import {User} from '../../types/types';
 import SignIn from '../sign/signin';
 import SignOut from '../sign/signout';
+import { favoriteFilmPostAction } from '../../store/api-actions';
 
-type FilmPageProps = {
-  films: Film[]
-}
 
 const SIMILAR_FILMS_MAX = 4;
 
-function FilmPage({films}:FilmPageProps): JSX.Element {
+function FilmPage(): JSX.Element {
 
   const { id } = useParams<{ id: string }>();
+  const user = useSelector<State, User>((state) => state.USER.user);
+  const films = useSelector<State, Film[]>((state) => state.DATA.films);
+  const favoriteFilms = useSelector<State, Film[]>((state) => state.DATA.favoriteFilms);
 
   const [currentFilm, setCurrentFilm] = useState<Film | undefined>(() => films.find((film) => film.id === parseFloat(id)));
   const [activeTab, setActiveTab] = useState(<Overview />);
-
-  const user = useSelector<State, User>((state) => state.USER.user);
+  const [similarFilms] = useState(() => films.filter((film) => film.genre === currentFilm?.genre && film.id !== currentFilm?.id).slice(0, SIMILAR_FILMS_MAX));
+  const [addReviewState, setAddReviewState] = useState(false);
   const [userStatus, setUserStatus] = useState(<SignIn />);
 
-  const [addReviewState, setAddReviewState] = useState(false);
+  const [isFilmFavorite, setFavoriteFilm] = useState(!!favoriteFilms.find((film) => film.id === currentFilm?.id));
 
+  const dispatch = useDispatch();
   const history = useHistory();
 
   useEffect(() => {
@@ -63,7 +65,7 @@ function FilmPage({films}:FilmPageProps): JSX.Element {
     return setAddReviewState(true);
   }, [user]);
 
-  function getTab(tab:string) {
+  const getTab = (tab:string) => {
     if (!currentFilm) {
       return;
     }
@@ -77,9 +79,11 @@ function FilmPage({films}:FilmPageProps): JSX.Element {
       case 'Reviews':
         setActiveTab(<Reviews/>);
     }
-  }
+  };
 
-  const [similarFilms] = useState(() => films.filter((film) => film.genre === currentFilm?.genre && film.id !== currentFilm?.id).slice(0, SIMILAR_FILMS_MAX));
+  const submitFavoriteFilm = (filmId: number, setFilm?: Dispatch<SetStateAction<boolean>>) => {
+    dispatch(favoriteFilmPostAction(filmId, setFilm));
+  };
 
   return (
     <>
@@ -112,9 +116,9 @@ function FilmPage({films}:FilmPageProps): JSX.Element {
                   </svg>
                   <span>Play</span>
                 </button>
-                <button className="btn btn--list film-card__button" type="button" onClick={() => history.push('/mylist')}>
-                  <svg viewBox="0 0 19 20" width="19" height="20">
-                    <use xlinkHref="#add"></use>
+                <button className="btn btn--list film-card__button" type="button" onClick={() => submitFavoriteFilm(parseFloat(id), setFavoriteFilm)}>
+                  <svg viewBox="0 0 18 14" width="18" height="14">
+                    <use xlinkHref={isFilmFavorite ? '#in-list' : '#add'}></use>
                   </svg>
                   <span>My list</span>
                 </button>
