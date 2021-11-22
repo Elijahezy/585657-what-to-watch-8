@@ -16,16 +16,6 @@ import {State} from '../../types/state';
 import {useSelector} from 'react-redux';
 import browserHistory from '../../browser-history';
 
-
-const Setting = {
-  PromoFilmInfo: {
-    title: 'The Grand Budapest Hotel',
-    genre: 'Drama',
-    releaseDate: 2014,
-  },
-};
-
-
 function App(): JSX.Element {
 
   const isDataLoaded = useSelector<State, boolean>((state) => state.USER.isDataLoaded);
@@ -43,10 +33,10 @@ function App(): JSX.Element {
     <BrowserRouter history={browserHistory}>
       <Switch>
         <Route exact path={AppRoute.Main}>
-          <MainPage promoFilmInfo={Setting.PromoFilmInfo} />
+          <MainPage />
         </Route>
         <Route exact path={AppRoute.Films}>
-          <FilmPage films={films}/>
+          <FilmPage />
         </Route>
         <Route exact path={AppRoute.Login}>
           <Login />
@@ -54,7 +44,7 @@ function App(): JSX.Element {
         <PrivateRoute
           exact
           path={AppRoute.MyList}
-          render={() => <MyList films={films}/>}
+          render={() => <MyList />}
         >
         </PrivateRoute>
         <Route exact path={AppRoute.Review}>

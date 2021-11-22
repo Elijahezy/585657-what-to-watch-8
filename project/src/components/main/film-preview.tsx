@@ -1,33 +1,37 @@
-import {useHistory} from 'react-router';
-import {AppRoute} from '../../const';
+import { useSelector } from 'react-redux';
+import { State } from '../../types/state';
+import { Film } from '../../types/types';
+import { useDispatch } from 'react-redux';
+import { favoriteFilmPostAction } from '../../store/api-actions';
+import { useState } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 
-type FilmPreviewProps = {
-  promoFilmInfo: {
-    title: string;
-    genre: string;
-    releaseDate: number;
+function FilmPreview(): JSX.Element {
+  const dispatch = useDispatch();
+
+  const promoFilm = useSelector<State, Film>((state) => state.DATA.promo);
+  const {name, genre, released, posterImage, id} = promoFilm;
+
+  const favoriteFilms = useSelector<State, Film[]>((state) => state.DATA.favoriteFilms);
+
+  const [isFilmFavorite, setFavoriteFilm] = useState(!!favoriteFilms.find((film) => film.id === promoFilm?.id));
+
+  const submitFavoriteFilm = (filmId: number, setFilm?: Dispatch<SetStateAction<boolean>>) => {
+    dispatch(favoriteFilmPostAction(filmId, setFilm));
   };
-}
-
-
-function FilmPreview({promoFilmInfo}:FilmPreviewProps): JSX.Element {
-
-  const {title, genre, releaseDate} = promoFilmInfo;
-
-  const history = useHistory();
 
   return (
     <div className="film-card__wrap">
       <div className="film-card__info">
         <div className="film-card__poster">
-          <img src="img/the-grand-budapest-hotel-poster.jpg" alt="The Grand Budapest Hotel poster" width="218" height="327" />
+          <img src={posterImage} alt={name} width="218" height="327" />
         </div>
 
         <div className="film-card__desc">
-          <h2 className="film-card__title">{title}</h2>
+          <h2 className="film-card__title">{name}</h2>
           <p className="film-card__meta">
             <span className="film-card__genre">{genre}</span>
-            <span className="film-card__year">{releaseDate}</span>
+            <span className="film-card__year">{released}</span>
           </p>
 
           <div className="film-card__buttons">
@@ -37,9 +41,9 @@ function FilmPreview({promoFilmInfo}:FilmPreviewProps): JSX.Element {
               </svg>
               <span>Play</span>
             </button>
-            <button className="btn btn--list film-card__button" type="button"  onClick={() => history.push(AppRoute.MyList)}>
+            <button className="btn btn--list film-card__button" type="button"  onClick={() => submitFavoriteFilm(id, setFavoriteFilm)}>
               <svg viewBox="0 0 19 20" width="19" height="20">
-                <use xlinkHref="#add"></use>
+                <use xlinkHref={isFilmFavorite ? '#in-list' : '#add'}></use>
               </svg>
               <span>My list</span>
             </button>

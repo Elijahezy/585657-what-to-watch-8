@@ -11,6 +11,8 @@ export type UserData = {
 export type FilmsData = {
   films: Film[],
   comments: Comment[],
+  promo: Film,
+  favoriteFilms: Film[],
 }
 
 export type FilmsProcess = {

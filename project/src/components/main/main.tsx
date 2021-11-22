@@ -3,37 +3,35 @@ import MainPageContent from './main-content';
 import FilmPreview from './film-preview';
 import Logo from '../logo/logo';
 import SignIn from '../sign/signin';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { State } from '../../types/state';
-import { User } from '../../types/types';
+import { User, Film } from '../../types/types';
 import SignOut from '../sign/signout';
 import {useEffect} from 'react';
+import { checkAuthAction } from '../../store/api-actions';
 
-type MainScreenProps = {
-  promoFilmInfo: {
-    title: string;
-    genre: string;
-    releaseDate: number;
-  };
-};
 
-function MainPage({promoFilmInfo}: MainScreenProps): JSX.Element {
+function MainPage(): JSX.Element {
 
   const [userStatus, setUserStatus] = useState(<SignOut />);
   const user = useSelector<State, User>((state) => state.USER.user);
+  const promoFilm = useSelector<State, Film>((state) => state.DATA.promo);
+  const {backgroundImage, name} = promoFilm;
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (user.id === undefined || user.id === 0) {
+      dispatch(checkAuthAction());
       return setUserStatus(<SignIn />);
     }
     return setUserStatus(<SignOut />);
-  }, [user.id]);
+  }, [dispatch, user.id]);
 
   return (
     <React.Fragment>
       <section className="film-card">
         <div className="film-card__bg">
-          <img src="img/bg-the-grand-budapest-hotel.jpg" alt="The Grand Budapest Hotel" />
+          <img src={backgroundImage} alt={name} />
         </div>
 
         <h1 className="visually-hidden">WTW</h1>
@@ -45,7 +43,7 @@ function MainPage({promoFilmInfo}: MainScreenProps): JSX.Element {
         </header>
 
         {
-          <FilmPreview promoFilmInfo={promoFilmInfo}/>
+          <FilmPreview />
         }
       </section>
       {
