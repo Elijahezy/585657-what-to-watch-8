@@ -17,14 +17,13 @@ const VIDEO_STYLES = {
 };
 
 function FilmSmallCard({filmsSmallCard}: {filmsSmallCard: Film}): JSX.Element {
-
+  const history = useHistory();
   const {id, name, posterImage, previewImage, previewVideoLink} = filmsSmallCard;
 
   const timer = useRef<NodeJS.Timeout | null>(null);
+
   const [ isHovered, setHovered ] = useState(false);
   const [ isDelayedHovered, setDelayedHovered ] = useState(false);
-
-  const history = useHistory();
 
   const clearTimer = () => {
     if (timer.current) {

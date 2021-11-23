@@ -6,11 +6,9 @@ import {ThunkAppDispatch} from '../../types/action';
 import Logo from '../logo/logo';
 
 function Login(): JSX.Element {
-
+  const dispatch = useDispatch<ThunkAppDispatch>();
   const loginRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
-
-  const dispatch = useDispatch<ThunkAppDispatch>();
 
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();

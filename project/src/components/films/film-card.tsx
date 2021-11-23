@@ -23,22 +23,22 @@ import { favoriteFilmPostAction } from '../../store/api-actions';
 const SIMILAR_FILMS_MAX = 4;
 
 function FilmPage(): JSX.Element {
+  const dispatch = useDispatch();
+  const history = useHistory();
 
   const { id } = useParams<{ id: string }>();
   const user = useSelector<State, User>((state) => state.USER.user);
   const films = useSelector<State, Film[]>((state) => state.DATA.films);
   const favoriteFilms = useSelector<State, Film[]>((state) => state.DATA.favoriteFilms);
 
-  const [currentFilm, setCurrentFilm] = useState<Film | undefined>(() => films.find((film) => film.id === parseFloat(id)));
-  const [activeTab, setActiveTab] = useState(<Overview />);
-  const [similarFilms] = useState(() => films.filter((film) => film.genre === currentFilm?.genre && film.id !== currentFilm?.id).slice(0, SIMILAR_FILMS_MAX));
-  const [addReviewState, setAddReviewState] = useState(false);
-  const [userStatus, setUserStatus] = useState(<SignIn />);
+  const [ currentFilm, setCurrentFilm ] = useState<Film | undefined>(() => films.find((film) => film.id === parseFloat(id)));
+  const [ activeTab, setActiveTab ] = useState(<Overview />);
+  const [ similarFilms ] = useState(() => films.filter((film) => film.genre === currentFilm?.genre && film.id !== currentFilm?.id).slice(0, SIMILAR_FILMS_MAX));
+  const [ addReviewState, setAddReviewState ] = useState(false);
+  const [ userStatus, setUserStatus ] = useState(<SignIn />);
 
-  const [isFilmFavorite, setFavoriteFilm] = useState(!!favoriteFilms.find((film) => film.id === currentFilm?.id));
+  const [ isFilmFavorite, setFavoriteFilm ] = useState(!!favoriteFilms.find((film) => film.id === currentFilm?.id));
 
-  const dispatch = useDispatch();
-  const history = useHistory();
 
   useEffect(() => {
     if (films.length && id) {

@@ -12,10 +12,9 @@ import { checkAuthAction, fetchFavoriteFilmsAction } from '../../store/api-actio
 
 
 function MyList(): JSX.Element {
-
-  const [userStatus, setUserStatus] = useState(<SignOut />);
-
   const dispatch = useDispatch();
+
+  const [ userStatus, setUserStatus ] = useState(<SignOut />);
 
   dispatch(fetchFavoriteFilmsAction());
   const user = useSelector<State, User>((state) => state.USER.user);
