@@ -12,12 +12,14 @@ import { checkAuthAction } from '../../store/api-actions';
 
 
 function MainPage(): JSX.Element {
+  const dispatch = useDispatch();
 
-  const [userStatus, setUserStatus] = useState(<SignOut />);
+  const [ userStatus, setUserStatus ] = useState(<SignOut />);
+
   const user = useSelector<State, User>((state) => state.USER.user);
   const promoFilm = useSelector<State, Film>((state) => state.DATA.promo);
-  const {backgroundImage, name} = promoFilm;
-  const dispatch = useDispatch();
+  const { backgroundImage, name } = promoFilm;
+
 
   useEffect(() => {
     if (user.id === undefined || user.id === 0) {

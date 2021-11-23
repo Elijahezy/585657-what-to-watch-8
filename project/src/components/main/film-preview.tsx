@@ -5,16 +5,18 @@ import { useDispatch } from 'react-redux';
 import { favoriteFilmPostAction } from '../../store/api-actions';
 import { useState } from 'react';
 import { Dispatch, SetStateAction } from 'react';
+import { useHistory } from 'react-router';
 
 function FilmPreview(): JSX.Element {
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const promoFilm = useSelector<State, Film>((state) => state.DATA.promo);
-  const {name, genre, released, posterImage, id} = promoFilm;
+  const { name, genre, released, posterImage, id } = promoFilm;
 
   const favoriteFilms = useSelector<State, Film[]>((state) => state.DATA.favoriteFilms);
 
-  const [isFilmFavorite, setFavoriteFilm] = useState(!!favoriteFilms.find((film) => film.id === promoFilm?.id));
+  const [ isFilmFavorite, setFavoriteFilm ] = useState(!!favoriteFilms.find((film) => film.id === promoFilm?.id));
 
   const submitFavoriteFilm = (filmId: number, setFilm?: Dispatch<SetStateAction<boolean>>) => {
     dispatch(favoriteFilmPostAction(filmId, setFilm));
@@ -35,7 +37,7 @@ function FilmPreview(): JSX.Element {
           </p>
 
           <div className="film-card__buttons">
-            <button className="btn btn--play film-card__button" type="button">
+            <button className="btn btn--play film-card__button" type="button" onClick={() => history.push(`/player/${id}`)}>
               <svg viewBox="0 0 19 19" width="19" height="19">
                 <use xlinkHref="#play-s"></use>
               </svg>

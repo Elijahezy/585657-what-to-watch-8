@@ -24,14 +24,14 @@ function Review({films}:ReviewProps): JSX.Element {
 
   const { id } = useParams<{ id: string }>();
 
-  const [currentFilm] = useState(() => films.find((film) => film.id === parseFloat(id)));
+  const [ currentFilm ] = useState(() => films.find((film) => film.id === parseFloat(id)));
 
-  const [comment, setComment] = useState('');
-  const [rating, setRating] = useState(0);
+  const [ comment, setComment ] = useState('');
+  const [ rating, setRating ] = useState(0);
 
   const dispatch = useDispatch<ThunkAppDispatch>();
 
-  const [userStatus, setUserStatus] = useState(<SignOut />);
+  const [ userStatus, setUserStatus ] = useState(<SignOut />);
   const user = useSelector<State, User>((state) => state.USER.user);
 
   useEffect(() => {
