@@ -1,6 +1,6 @@
 import {createReducer} from '@reduxjs/toolkit';
 import {FilmsData} from '../../types/state';
-import { promoFilm } from '../../utils';
+import { promoFilm } from '../../const';
 import {loadComments, loadFavoriteFilms, loadFilms, loadPromoFilm} from '../action';
 
 const initialState: FilmsData = {

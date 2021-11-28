@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React, { useState } from 'react';
 import MainPageContent from './main-content';
 import FilmPreview from './film-preview';
@@ -12,6 +13,8 @@ import { checkAuthAction } from '../../store/api-actions';
 
 
 function MainPage(): JSX.Element {
+
+
   const dispatch = useDispatch();
 
   const [ userStatus, setUserStatus ] = useState(<SignOut />);
@@ -19,7 +22,6 @@ function MainPage(): JSX.Element {
   const user = useSelector<State, User>((state) => state.USER.user);
   const promoFilm = useSelector<State, Film>((state) => state.DATA.promo);
   const { backgroundImage, name } = promoFilm;
-
 
   useEffect(() => {
     if (user.id === undefined || user.id === 0) {

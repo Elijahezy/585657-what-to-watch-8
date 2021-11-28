@@ -1,7 +1,7 @@
 import { ActionTypes} from '../types/action';
 import { Comment, Film, User } from '../types/types';
 import { AuthorizationStatus } from '../const';
-import { AppRoute } from '../const';
+
 import {createAction} from '@reduxjs/toolkit';
 
 export const changeActiveGenre = createAction(
@@ -59,7 +59,7 @@ export const loadUser = createAction(
 
 export const redirectToRoute = createAction(
   ActionTypes.RedirectToRoute,
-  (url: AppRoute) => ({
+  (url: string) => ({
     payload: url,
   }),
 );

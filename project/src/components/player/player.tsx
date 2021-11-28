@@ -26,19 +26,19 @@ function Player({films}: PlayerProps): JSX.Element {
     return <Error />;
   }
 
-  const waitingHandler = () => {
+  const handleWaiting = () => {
     setIsVideoLoading(true);
   };
 
-  const loadedDataHandler = () => {
+  const handleLoadedData = () => {
     setIsVideoLoading(false);
   };
 
-  const playingHandler = () => {
+  const handlePlaying = () => {
     setIsVideoLoading(false);
   };
 
-  const timeUpdateHandler = (evt: React.SyntheticEvent<HTMLVideoElement>) => {
+  const handleTimeUpdate = (evt: React.SyntheticEvent<HTMLVideoElement>) => {
     const { currentTarget } = evt;
     const percentage = currentTarget.currentTime * 100 / currentTarget.duration;
     const timeElapsed = formatTimeElapsed(currentTarget.duration - currentTarget.currentTime);
@@ -47,7 +47,7 @@ function Player({films}: PlayerProps): JSX.Element {
     setProgress(percentage);
   };
 
-  const playButtonClickHandler = () => {
+  const handlePlayButtonClick = () => {
     if (videoRef && videoRef.current) {
       const player = videoRef.current;
 
@@ -61,21 +61,21 @@ function Player({films}: PlayerProps): JSX.Element {
     }
   };
 
-  const fullScreenClickHandler = () => {
+  const handleFullScreenClick = () => {
     if (videoRef && videoRef.current) {
       videoRef.current.requestFullscreen();
     }
   };
 
-  const exitClickHandler = () => {
+  const handleExitClick = () => {
     history.push(`/films/${id}`);
   };
 
-  const playHandler = () => {
+  const handlePlayClick = () => {
     setIsPlaying(true);
   };
 
-  const pauseHandler = () => {
+  const handlePauseClick = () => {
     setIsPlaying(false);
   };
 
@@ -93,18 +93,18 @@ function Player({films}: PlayerProps): JSX.Element {
               className="player__video"
               poster={backgroundImage}
               autoPlay
-              onPlay={playHandler}
-              onPause={pauseHandler}
-              onTimeUpdate={timeUpdateHandler}
-              onWaiting={waitingHandler}
-              onPlaying={playingHandler}
-              onLoadedData={loadedDataHandler}
+              onPlay={handlePlayClick}
+              onPause={handlePauseClick}
+              onTimeUpdate={handleTimeUpdate}
+              onWaiting={handleWaiting}
+              onPlaying={handlePlaying}
+              onLoadedData={handleLoadedData}
             />
         }
         <button
           type="button"
           className="player__exit"
-          onClick={exitClickHandler}
+          onClick={handleExitClick}
         >
           Exit
         </button>
@@ -118,14 +118,14 @@ function Player({films}: PlayerProps): JSX.Element {
           </div>
 
           <div className="player__controls-row">
-            <button type="button" className="player__play" onClick={playButtonClickHandler}>
+            <button type="button" className="player__play" onClick={handlePlayButtonClick}>
               <svg viewBox="0 0 19 19" width="19" height="19">
                 { isPlaying ? <use xlinkHref="#pause"></use> : <use xlinkHref="#play-s"/>}
               </svg>
               <span>Play</span>
             </button>
             <div className="player__name">{name}</div>
-            <button type="button" className="player__full-screen" onClick={fullScreenClickHandler}>
+            <button type="button" className="player__full-screen" onClick={handleFullScreenClick}>
               <svg viewBox="0 0 27 27" width="27" height="27">
                 <use xlinkHref="#full-screen"/>
               </svg>

@@ -6,6 +6,9 @@ import {Comment, CommentPost, ServerFilm} from '../types/types';
 import {AuthData} from '../types/auth-data';
 import { adaptToClient, adaptUserDataToClient } from '../utils';
 import { Dispatch, SetStateAction } from 'react';
+import {toast} from 'react-toastify';
+
+const POST_REVIEW_FAIL_MESSAGE = 'Не удалось отправить отзыв';
 
 export const fetchFilmsAction = (): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
@@ -58,9 +61,18 @@ export const loginAction = ({email, password}: AuthData): ThunkActionResult =>
     dispatch(requireAuthorization(AuthorizationStatus.Auth));
   };
 
-export const commentPostAction = ({id, rating, comment}: CommentPost): ThunkActionResult =>
+export const commentPostAction = ({id, rating, comment}: CommentPost, setFormStatus: Dispatch<SetStateAction<boolean>>, setSubmitButtonStatus: Dispatch<SetStateAction<boolean>>): ThunkActionResult =>
   async (dispatch, _getState, api) => {
-    await api.post(`${APIRoute.Comments}/${id}`, {rating, comment});
+    try {
+      await api.post(`${APIRoute.Comments}/${id}`, {rating, comment});
+      dispatch(redirectToRoute(`/films/${id}`));
+      setFormStatus(false);
+      setSubmitButtonStatus(false);
+    } catch {
+      toast.info(POST_REVIEW_FAIL_MESSAGE);
+      setFormStatus(false);
+      setSubmitButtonStatus(false);
+    }
   };
 
 export const favoriteFilmPostAction = (id: number, setFilm?: Dispatch<SetStateAction<boolean>>): ThunkActionResult =>

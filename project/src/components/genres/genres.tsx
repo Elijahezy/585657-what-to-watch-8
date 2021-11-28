@@ -4,7 +4,7 @@ import { MouseEvent } from 'react';
 import cn from 'classnames';
 import { Actions } from '../../types/action';
 import { State } from '../../types/state';
-import { changeActiveGenre, resetLimit } from '../../store/action';
+import { changeActiveGenre } from '../../store/action';
 
 type GenresProps = {
   genres: string[];
@@ -18,9 +18,6 @@ const mapDispatchToProps = (dispatch: Dispatch<Actions>) => ({
   onChangeGenre(genre: string) {
     dispatch(changeActiveGenre(genre));
   },
-  onResetLimit() {
-    dispatch(resetLimit());
-  },
 });
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
@@ -28,7 +25,7 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 type PropsFromRedux = ConnectedProps<typeof connector>;
 type ConnectedComponentProps = PropsFromRedux & GenresProps;
 
-function Genres({genres, genreState, onChangeGenre, onResetLimit}: ConnectedComponentProps): JSX.Element {
+function Genres({genres, genreState, onChangeGenre}: ConnectedComponentProps): JSX.Element {
   const handleGenreClick = (
     evt: MouseEvent<HTMLAnchorElement>,
     genre: string,
@@ -36,7 +33,6 @@ function Genres({genres, genreState, onChangeGenre, onResetLimit}: ConnectedComp
     evt.preventDefault();
 
     onChangeGenre(genre);
-    onResetLimit();
   };
 
   const genreClasses = (genre: string) =>
