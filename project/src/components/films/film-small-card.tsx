@@ -2,12 +2,6 @@ import {Film} from '../../types/types';
 import { Link, useHistory } from 'react-router-dom';
 import { useEffect, useState, useRef, memo } from 'react';
 
-export type FilmCardProps = {
-  films: Film;
-  onMouseEnter: (id: number) => void,
-  onMouseLeave: () => void
-}
-
 const TIME = 1000;
 
 const VIDEO_STYLES = {

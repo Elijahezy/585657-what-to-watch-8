@@ -1,5 +1,5 @@
 import {Film} from '../../types/types';
-import {FormEvent, useState} from 'react';
+import {FormEvent, useMemo, useState} from 'react';
 import {
   useParams,
   Link } from 'react-router-dom';
@@ -13,12 +13,16 @@ import {State} from '../../types/state';
 import {User} from '../../types/types';
 import SignIn from '../sign/signin';
 import SignOut from '../sign/signout';
+import ReviewStar from './review-rating-star';
+import uniqid from 'uniqid';
 
 type ReviewProps = {
   films: Film[],
 }
 
 const RATING_STARS = 10;
+const MAX_COMMENT_LENGTH = 400;
+const MIN_COMMENT_LENGTH = 50;
 
 function Review({films}:ReviewProps): JSX.Element {
 
@@ -28,6 +32,8 @@ function Review({films}:ReviewProps): JSX.Element {
 
   const [ comment, setComment ] = useState('');
   const [ rating, setRating ] = useState(0);
+  const [ submitButtonStatus, setSubmitButtonStatus] = useState(true);
+  const [ formStatus, setFormStatus] = useState(false);
 
   const dispatch = useDispatch<ThunkAppDispatch>();
 
@@ -41,13 +47,29 @@ function Review({films}:ReviewProps): JSX.Element {
     return setUserStatus(<SignOut />);
   }, [user]);
 
+  useEffect(() => {
+    if (comment.length > MAX_COMMENT_LENGTH || comment.length < MIN_COMMENT_LENGTH || rating === 0) {
+      return setSubmitButtonStatus(true);
+    }
+    return setSubmitButtonStatus(false);
+  }, [rating, comment]);
+
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
 
     if (rating !== 0 && comment !== '') {
-      dispatch(commentPostAction({id, rating, comment}));
+      setFormStatus(true);
+      setSubmitButtonStatus(true);
+      dispatch(commentPostAction({id, rating, comment}, setFormStatus, setSubmitButtonStatus));
     }
   };
+
+  const memoizedRatingStars = useMemo(() => (
+    new Array(RATING_STARS)
+      .fill('')
+      .map((value, index) => <ReviewStar key={uniqid()} index={index} setRating={setRating}/>)
+      .reverse()
+  ), []);
 
 
   return (
@@ -86,7 +108,7 @@ function Review({films}:ReviewProps): JSX.Element {
           <div className="rating">
             <div className="rating__stars">
               {
-                new Array(RATING_STARS).fill('').map((value, index) => <><input className="rating__input" id={`star-${index}`} type="radio" name="rating" value={index} onChange={(e) => setRating(parseFloat(e.target.value))}/><label className="rating__label" htmlFor={`star-${index}`}>Rating {index}</label></>)
+                memoizedRatingStars
               }
             </div>
           </div>
@@ -98,10 +120,11 @@ function Review({films}:ReviewProps): JSX.Element {
               placeholder="Review text"
               value={comment}
               onChange={(e) => setComment(e.target.value)}
+              disabled={formStatus}
             >
             </textarea>
             <div className="add-review__submit">
-              <button className="add-review__btn" type="submit">Post</button>
+              <button className="add-review__btn" type="submit" disabled={submitButtonStatus}>Post</button>
             </div>
 
           </div>

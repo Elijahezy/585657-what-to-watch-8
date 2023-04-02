@@ -1,4 +1,4 @@
-import {AuthorizationStatus, DEFAULT_GENRE, MAX_NUMBER_GENRES} from './const';
+import {AuthorizationStatus, DEFAULT_GENRE, MAX_NUMBER_GENRES, Rating} from './const';
 import {Film, ServerFilm, ServerUser, User} from './types/types';
 // @ts-ignore
 import dayjs from 'dayjs';
@@ -69,9 +69,14 @@ dayjs.extend(duration);
 const formatDate = (date: Date, format: string): string =>
   dayjs(date).format(format).toString();
 
-const formatFilmDuration = (period: number): string => dayjs
-  .duration(period, 'minutes')
-  .format('HH[h] mm[m]');
+const formatFilmDuration = (period: number | undefined): string => {
+  if (period) {
+    return dayjs
+      .duration(period, 'minutes')
+      .format('HH[h] mm[m]');
+  }
+  return '';
+};
 
 const formatTimeElapsed = (period: number): string =>
   dayjs
@@ -85,22 +90,25 @@ export {
   formatDate
 };
 
-export const promoFilm = {
-  id: 0,
-  name: '',
-  videoLink: '',
-  description: '',
-  genre: '',
-  previewImage: '',
-  posterImage: '',
-  backgroundImage: '',
-  backgroundColor: '',
-  previewVideoLink: '',
-  rating: 0,
-  scoresCount: 0,
-  director: '',
-  starring: [],
-  runTime: 0,
-  released: 0,
-  isFavorite: false,
+
+export const setFilmRating = (film: Film | undefined): string => {
+  if (film) {
+    if (film.rating <= 3) {
+      return Rating.Bad;
+    }
+    if (film.rating <= 5 && film.rating > 3) {
+      return Rating.Normal;
+    }
+    if (film.rating <= 8 && film.rating > 5) {
+      return Rating.Good;
+    }
+    if (film.rating < 10 && film.rating > 8) {
+      return Rating.VeryGood;
+    }
+    if (film.rating === 10) {
+      return Rating.Awesome;
+    }
+  }
+  return '';
 };
+

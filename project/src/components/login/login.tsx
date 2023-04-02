@@ -5,13 +5,32 @@ import {loginAction} from '../../store/api-actions';
 import {ThunkAppDispatch} from '../../types/action';
 import Logo from '../logo/logo';
 
+const regExpPasswordValidation = /(?=.*[a-zA-Z0-9])/g;
+
 function Login(): JSX.Element {
   const dispatch = useDispatch<ThunkAppDispatch>();
   const loginRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
 
+  const handlePasswordValidation = (evt: FormEvent<HTMLInputElement>) => {
+    evt.preventDefault();
+
+    if (evt.currentTarget.value) {
+      if (!regExpPasswordValidation.test(evt.currentTarget.value)) {
+        return evt.currentTarget.setCustomValidity('Введите пароль');
+      }
+      return evt.currentTarget.setCustomValidity('');
+    }
+
+  };
+
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
+
+    if (loginRef.current?.value.length === 0) {
+      loginRef.current.setCustomValidity('Введите пароль');
+    }
+
     if (loginRef.current !== null && passwordRef.current !== null) {
       dispatch(loginAction({
         email: loginRef.current.value,
@@ -49,6 +68,8 @@ function Login(): JSX.Element {
                 name="user-password"
                 id="user-password"
                 ref={passwordRef}
+                required
+                onInput={(evt) => handlePasswordValidation(evt)}
               />
               <label className="sign-in__label visually-hidden" htmlFor="user-password">Password</label>
             </div>

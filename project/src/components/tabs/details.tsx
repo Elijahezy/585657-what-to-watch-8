@@ -3,6 +3,7 @@ import {useParams} from 'react-router';
 import {State} from '../../types/state';
 import {useSelector} from 'react-redux';
 import {memo} from "react";
+import { formatFilmDuration } from '../../utils';
 
 function Details(): JSX.Element {
 
@@ -10,6 +11,7 @@ function Details(): JSX.Element {
   const films = useSelector<State, Film[]>((state) => state.DATA.films);
 
   const currentFilm = films.find((film) => film.id === parseFloat(id));
+  const filmDuration = formatFilmDuration(currentFilm?.runTime);
 
   return (
     <div className="film-card__text film-card__row">
@@ -28,7 +30,7 @@ function Details(): JSX.Element {
       <div className="film-card__text-col">
         <p className="film-card__details-item">
           <strong className="film-card__details-name">Run Time</strong>
-          <span className="film-card__details-value">{currentFilm?.runTime}</span>
+          <span className="film-card__details-value">{filmDuration}</span>
         </p>
         <p className="film-card__details-item">
           <strong className="film-card__details-name">Genre</strong>
