@@ -6,7 +6,7 @@ import { Comment as CommentType } from '../../types/types';
 import { useDispatch } from 'react-redux';
 import Comment from '../tabs/comment';
 import { ThunkAppDispatch } from '../../types/action';
-import { useEffect } from 'react';
+import {memo, useEffect} from 'react';
 
 function Reviews(): JSX.Element {
   const { id } = useParams<{ id: string }>();
@@ -31,4 +31,4 @@ function Reviews(): JSX.Element {
 }
 
 
-export default Reviews;
+export default memo(Reviews);

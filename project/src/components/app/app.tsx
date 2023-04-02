@@ -15,6 +15,7 @@ import {isCheckedAuth} from '../../utils';
 import {State} from '../../types/state';
 import {useSelector} from 'react-redux';
 import browserHistory from '../../browser-history';
+import CircleSpinner from "../spinner/spinner";
 
 function App(): JSX.Element {
 
@@ -25,7 +26,7 @@ function App(): JSX.Element {
 
   if (isCheckedAuth(authorizationStatus) || !isDataLoaded) {
     return (
-      <LoadingScreen />
+      <CircleSpinner />
     );
   }
 

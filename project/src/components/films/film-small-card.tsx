@@ -1,6 +1,6 @@
 import {Film} from '../../types/types';
 import { Link, useHistory } from 'react-router-dom';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, memo } from 'react';
 
 export type FilmCardProps = {
   films: Film;
@@ -72,4 +72,4 @@ function FilmSmallCard({filmsSmallCard}: {filmsSmallCard: Film}): JSX.Element {
   );
 }
 
-export default FilmSmallCard;
+export default memo(FilmSmallCard);

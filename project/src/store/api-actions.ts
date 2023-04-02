@@ -41,7 +41,6 @@ export const checkAuthAction = (): ThunkActionResult =>
   async (dispatch, _getState, api) => {
     await api.get(APIRoute.Login)
       .then((response) => {
-        console.log(response);
         if (response.status !== 200) {
           return;
         }

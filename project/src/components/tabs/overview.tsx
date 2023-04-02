@@ -1,5 +1,5 @@
 import {Film} from '../../types/types';
-import React from 'react';
+import React, {memo} from 'react';
 import {useParams} from 'react-router';
 import {State} from '../../types/state';
 import {useSelector} from 'react-redux';
@@ -29,4 +29,4 @@ function Overview(): JSX.Element {
     </React.Fragment>);
 }
 
-export default Overview;
+export default memo(Overview);

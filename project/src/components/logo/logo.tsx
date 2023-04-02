@@ -1,3 +1,5 @@
+import {memo} from "react";
+
 type LogoProps = {
   className?: string,
 }
@@ -15,5 +17,5 @@ function Logo({className}: LogoProps): JSX.Element {
   );
 }
 
-export default Logo;
+export default memo(Logo);
 

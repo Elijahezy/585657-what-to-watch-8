@@ -2,6 +2,7 @@ import {Film} from '../../types/types';
 import {useParams} from 'react-router';
 import {State} from '../../types/state';
 import {useSelector} from 'react-redux';
+import {memo} from "react";
 
 function Details(): JSX.Element {
 
@@ -43,4 +44,4 @@ function Details(): JSX.Element {
 }
 
 
-export default Details;
+export default memo(Details);

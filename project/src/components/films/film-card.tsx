@@ -4,7 +4,7 @@ import {
   useParams,
   Link } from 'react-router-dom';
 import { useHistory } from 'react-router';
-import {Dispatch, SetStateAction, useState} from 'react';
+import {Dispatch, memo, SetStateAction, useState} from 'react';
 import Overview from '../tabs/overview';
 import Details from '../tabs/details';
 import Reviews from '../tabs/reviews';
@@ -148,7 +148,6 @@ function FilmPage(): JSX.Element {
                   </li>
                 </ul>
               </nav>
-
               {activeTab}
             </div>
           </div>
@@ -166,4 +165,4 @@ function FilmPage(): JSX.Element {
   );
 }
 
-export default FilmPage;
+export default memo(FilmPage);

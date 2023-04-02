@@ -1,6 +1,8 @@
 import {AuthorizationStatus, DEFAULT_GENRE, MAX_NUMBER_GENRES} from './const';
 import {Film, ServerFilm, ServerUser, User} from './types/types';
+// @ts-ignore
 import dayjs from 'dayjs';
+// @ts-ignore
 import duration from 'dayjs/plugin/duration';
 
 export const isCheckedAuth = (authorizationStatus: AuthorizationStatus): boolean =>
