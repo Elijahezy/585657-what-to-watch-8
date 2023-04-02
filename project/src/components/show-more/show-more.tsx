@@ -2,6 +2,7 @@ import { useDispatch } from 'react-redux';
 
 import { incrementLimit } from '../../store/action';
 import { SHOWN_COUNT_FILMS } from '../../const';
+import {memo} from "react";
 
 function ShowMore(): JSX.Element {
   const dispatch = useDispatch();
@@ -22,4 +23,4 @@ function ShowMore(): JSX.Element {
   );
 }
 
-export default (ShowMore);
+export default memo(ShowMore);

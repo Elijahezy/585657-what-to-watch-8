@@ -44,7 +44,7 @@ export const checkAuthAction = (): ThunkActionResult =>
   async (dispatch, _getState, api) => {
     await api.get(APIRoute.Login)
       .then((response) => {
-        if (response.statusText !== 'OK') {
+        if (response.status !== 200) {
           return;
         }
         const data = adaptUserDataToClient(response.data);
